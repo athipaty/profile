@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Athipat Chamnanpa — Web Developer</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand:     #2563eb;
+      --brand-lt:  #dbeafe;
+      --dark:      #0f172a;
+      --mid:       #1e293b;
+      --muted:     #64748b;
+      --light:     #f8fafc;
+      --border:    #e2e8f0;
+      --radius:    14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px;
+    }
+    .nav-logo { font-weight: 800; font-size: 1.05rem; color: var(--brand); letter-spacing: -0.5px; }
+    .nav-right { display: flex; align-items: center; gap: 2rem; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; font-size: 0.9rem; font-weight: 500;
+      color: var(--muted); transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--brand); }
+
+    /* Language toggle */
+    .lang-toggle {
+      display: flex; align-items: center;
+      background: var(--light); border: 1.5px solid var(--border);
+      border-radius: 99px; padding: 3px; gap: 2px;
+    }
+    .lang-btn {
+      font-size: .75rem; font-weight: 700; padding: 4px 12px;
+      border-radius: 99px; border: none; cursor: pointer;
+      transition: all .2s; background: transparent; color: var(--muted);
+    }
+
+    .print-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: .78rem; font-weight: 700; padding: 7px 14px;
+      border-radius: 99px; border: 1.5px solid var(--brand);
+      color: var(--brand); background: #fff; cursor: pointer; transition: all .2s;
+    }
+    .print-btn:hover { background: var(--brand); color: #fff; }
+    .lang-btn.active { background: var(--brand); color: #fff; }
+
+    /* ── SECTIONS ── */
+    section { padding: 80px 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    /* ── HERO ── */
+    #hero {
+      background: linear-gradient(135deg, var(--dark) 0%, #1e3a8a 60%, #2563eb 100%);
+      color: #fff;
+      min-height: 92vh;
+      display: flex; align-items: center;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .hero-avatar {
+      width: 148px; height: 148px; border-radius: 50%;
+      overflow: hidden; margin-bottom: 1.4rem;
+      border: 3px solid rgba(255,255,255,.25);
+      box-shadow: 0 8px 25px rgba(0,0,0,.25);
+    }
+    .hero-avatar img {
+      width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%;
+      display: block;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 99px; padding: 6px 16px;
+      font-size: .78rem; font-weight: 600; letter-spacing: .5px;
+      margin-bottom: 1.2rem; color: #bfdbfe;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 800; line-height: 1.1;
+      letter-spacing: -1px; margin-bottom: .8rem;
+    }
+    .hero h1 span { color: #60a5fa; }
+    .hero-sub {
+      font-size: 1.1rem; color: #94a3b8;
+      max-width: 480px; margin-bottom: 2rem; line-height: 1.7;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 26px; border-radius: 99px;
+      font-weight: 700; font-size: .9rem; cursor: pointer;
+      text-decoration: none; transition: all .2s; border: none;
+    }
+    .btn-primary { background: var(--brand); color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37,99,235,.4); }
+    .btn-outline { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.4); }
+    .btn-outline:hover { background: rgba(255,255,255,.1); border-color: #fff; }
+
+    /* Hero visual card */
+    .hero-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 20px; padding: 2rem;
+    }
+    .hero-card-title {
+      font-size: .7rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: #64748b; margin-bottom: 1rem;
+    }
+    .hero-stat { margin-bottom: 1.2rem; }
+    .hero-stat-label { font-size: .78rem; color: #94a3b8; margin-bottom: 4px; }
+    .hero-stat-bar { height: 8px; background: rgba(255,255,255,.08); border-radius: 99px; overflow: hidden; }
+    .hero-stat-fill { height: 100%; border-radius: 99px; }
+    .hero-stat-row { display: flex; justify-content: space-between; align-items: center; }
+    .hero-stat-pct { font-size: .72rem; color: #60a5fa; font-weight: 700; }
+    .fill-react    { width: 95%; background: linear-gradient(90deg, #60a5fa, #3b82f6); }
+    .fill-tailwind { width: 92%; background: linear-gradient(90deg, #34d399, #10b981); }
+    .fill-node     { width: 80%; background: linear-gradient(90deg, #a78bfa, #7c3aed); }
+    .fill-js       { width: 90%; background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+    .fill-ui       { width: 88%; background: linear-gradient(90deg, #f472b6, #ec4899); }
+    .hero-projects-row {
+      display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 1.4rem;
+      padding-top: 1.4rem; border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .hero-pill {
+      font-size: .7rem; font-weight: 600; padding: 4px 12px;
+      border-radius: 99px; background: rgba(255,255,255,.08); color: #cbd5e1;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-header { text-align: center; margin-bottom: 3.5rem; }
+    .section-tag {
+      display: inline-block; font-size: .72rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--brand); background: var(--brand-lt);
+      padding: 5px 14px; border-radius: 99px; margin-bottom: .8rem;
+    }
+    .section-header h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800; letter-spacing: -0.5px; color: var(--dark);
+    }
+    .section-header p { color: var(--muted); font-size: 1rem; margin-top: .5rem; }
+
+    /* ── ABOUT ── */
+    #about { background: #fff; }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+    }
+    .about-text h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: .8rem; }
+    .about-text p { color: var(--muted); line-height: 1.8; margin-bottom: 1rem; }
+    .highlight { color: var(--brand); font-weight: 700; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .stat-box {
+      background: var(--light); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.2rem 1.4rem;
+    }
+    .stat-num { font-size: 2rem; font-weight: 800; color: var(--brand); line-height: 1; }
+    .stat-lbl { font-size: .8rem; color: var(--muted); margin-top: 4px; font-weight: 500; }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--light); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+    .skill-card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.4rem 1.2rem;
+      text-align: center; transition: all .2s;
+    }
+    .skill-card:hover { border-color: var(--brand); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(37,99,235,.08); }
+    .skill-icon { font-size: 2rem; margin-bottom: .6rem; }
+    .skill-name { font-weight: 700; font-size: .9rem; color: var(--dark); }
+    .skill-tag { font-size: .72rem; color: var(--muted); margin-top: 3px; }
+
+    /* ── PROJECTS ── */
+    #projects { background: #fff; }
+    .projects-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+    .project-card {
+      border: 1px solid var(--border); border-radius: 18px;
+      overflow: hidden; transition: all .25s;
+      display: flex; flex-direction: row; align-items: stretch;
+    }
+    .project-card:hover { border-color: var(--brand); transform: translateY(-2px); box-shadow: 0 16px 40px rgba(37,99,235,.1); }
+    .project-body { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+    .project-thumb {
+      width: 300px; flex-shrink: 0; overflow: hidden; box-sizing: border-box;
+      background: linear-gradient(180deg, var(--mid) 0%, var(--dark) 100%);
+      margin: 14px 14px 14px 20px;
+      border-radius: 24px;
+      padding: 18px 11px 11px;
+      position: relative;
+      box-shadow: 0 12px 28px rgba(15,23,42,.18);
+    }
+    .project-thumb::before {
+      content: ""; position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+      width: 64px; height: 15px; background: var(--dark);
+      border-radius: 0 0 10px 10px; z-index: 2;
+    }
+    .project-thumb img {
+      width: 100%; height: 100%; object-fit: cover; object-position: top center;
+      display: block; border-radius: 20px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.08) inset, 0 8px 20px rgba(0,0,0,.25);
+    }
+    .project-text { display: flex; flex-direction: column; }
+    .project-top {
+      padding: 1.8rem 1.8rem 1.2rem;
+      display: flex; align-items: flex-start; gap: 1rem;
+    }
+    .project-features {
+      background: linear-gradient(180deg, var(--light) 0%, #f1f5f9 100%);
+      border-top: 1px solid var(--border);
+      padding: 1.2rem 1.4rem 1.3rem;
+    }
+    .project-features-label {
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .68rem; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase;
+      color: var(--brand); margin-bottom: .8rem;
+    }
+    .project-features-label::before {
+      content: ""; width: 14px; height: 2px; border-radius: 2px;
+      background: var(--brand);
+    }
+    .project-features ul {
+      list-style: none; display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .7rem;
+    }
+    .project-features li {
+      background: #fff; border: 1px solid var(--border); border-radius: 12px;
+      padding: .7rem .8rem; font-size: .78rem; color: var(--mid); line-height: 1.45;
+      display: flex; align-items: flex-start; gap: .55rem;
+      box-shadow: 0 1px 2px rgba(15,23,42,.04);
+      transition: all .2s;
+    }
+    .project-features li:hover {
+      border-color: var(--brand); transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(37,99,235,.12);
+    }
+    .project-features li::before {
+      content: "✓"; flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand) 0%, #60a5fa 100%);
+      color: #fff; font-size: .62rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; margin-top: .05rem;
+      box-shadow: 0 2px 5px rgba(37,99,235,.35);
+    }
+    .project-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; flex-shrink: 0;
+    }
+    .project-meta { flex: 1; }
+    .project-title { font-weight: 800; font-size: 1.05rem; margin-bottom: .3rem; }
+    .project-desc { font-size: .875rem; color: var(--muted); line-height: 1.6; }
+    .project-tags {
+      display: flex; gap: .5rem; flex-wrap: wrap;
+      padding: 0 1.8rem 1rem;
+    }
+    .tag {
+      font-size: .7rem; font-weight: 600; padding: 3px 10px;
+      border-radius: 99px; border: 1px solid var(--border);
+      color: var(--muted); background: var(--light);
+    }
+    .tag-blue   { background: #dbeafe; color: #1d4ed8; border-color: #bfdbfe; }
+    .tag-green  { background: #dcfce7; color: #15803d; border-color: #bbf7d0; }
+    .tag-purple { background: #f3e8ff; color: #7e22ce; border-color: #e9d5ff; }
+    .tag-amber  { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+    .tag-pink   { background: #fce7f3; color: #9d174d; border-color: #fbcfe8; }
+    .tag-slate  { background: #f1f5f9; color: #475569; border-color: #e2e8f0; }
+
+    .bg-blue   { background: #dbeafe; }
+    .bg-green  { background: #dcfce7; }
+    .bg-purple { background: #f3e8ff; }
+    .bg-amber  { background: #fef3c7; }
+    .bg-pink   { background: #fce7f3; }
+    .bg-slate  { background: #f1f5f9; }
+
+    .project-footer { padding: 0 1.8rem 1.4rem; margin-top: auto; }
+    .btn-demo {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: .78rem; font-weight: 700; padding: 7px 16px;
+      border-radius: 99px; border: 1.5px solid var(--brand);
+      color: var(--brand); text-decoration: none; transition: all .2s;
+    }
+    .btn-demo:hover { background: var(--brand); color: #fff; }
+
+    /* ── CERTIFICATIONS ── */
+    #certifications { background: var(--light); }
+    .cert-card {
+      background: #fff; border: 1px solid var(--border); border-radius: 18px;
+      display: flex; align-items: flex-start; gap: 1.2rem;
+      padding: 1.6rem 1.8rem; transition: all .25s;
+    }
+    .cert-card:hover { border-color: var(--brand); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(37,99,235,.1); }
+    .cert-icon {
+      width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
+    }
+    .cert-meta { flex: 1; }
+    .cert-title { font-weight: 800; font-size: 1.05rem; margin-bottom: .3rem; }
+    .cert-issuer { font-size: .875rem; color: var(--muted); margin-bottom: .8rem; }
+    .cert-details { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+
+    /* Certificate viewer modal */
+    .cert-modal {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(15,23,42,.75); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 2rem;
+    }
+    .cert-modal.open { display: flex; }
+    .cert-modal-inner {
+      position: relative; width: min(900px, 100%); height: min(85vh, 1100px);
+      background: #fff; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0,0,0,.4);
+    }
+    .cert-modal-frame { width: 100%; height: 100%; border: none; display: block; }
+    .cert-modal-close {
+      position: absolute; top: 10px; right: 10px; z-index: 1;
+      width: 36px; height: 36px; border-radius: 50%; border: none;
+      background: rgba(15,23,42,.85); color: #fff; font-size: 1.4rem;
+      line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .cert-modal-close:hover { background: var(--dark); }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: linear-gradient(135deg, var(--dark) 0%, #1e3a8a 100%);
+      color: #fff; text-align: center;
+    }
+    #contact .section-tag { background: rgba(255,255,255,.12); color: #bfdbfe; }
+    #contact .section-header h2 { color: #fff; }
+    #contact .section-header p { color: #94a3b8; }
+    .contact-card {
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 20px; padding: 2.5rem; max-width: 560px; margin: 0 auto;
+    }
+    .contact-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: .9rem 0; border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .contact-item:last-child { border: none; padding-bottom: 0; }
+    .contact-ico {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(255,255,255,.1); display: flex; align-items: center;
+      justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+    }
+    .contact-lbl { font-size: .72rem; color: #64748b; font-weight: 600; margin-bottom: 2px; }
+    .contact-val { font-size: .95rem; color: #e2e8f0; font-weight: 600; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark); color: #475569;
+      text-align: center; padding: 1.5rem 2rem;
+      font-size: .82rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      section { padding: 60px 1.2rem; }
+      .hero-grid, .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero-card { display: none; }
+      .hero h1 { font-size: 2.2rem; }
+      .nav-links { display: none; }
+      .print-btn-label { display: none; }
+      .print-btn { padding: 7px 10px; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .project-card { flex-direction: column; }
+      .project-thumb { width: auto; height: 220px; margin: 14px 14px 0 14px; }
+      .project-features ul { grid-template-columns: 1fr; }
+    }
+
+    /* ── PRINT / DOWNLOAD AS PDF ── */
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      nav { display: none !important; }
+      .hero-btns { display: none !important; }
+      #hero { min-height: auto; padding: 40px 2rem; }
+      .hero-grid { grid-template-columns: 1fr 1fr !important; gap: 2rem; }
+      .hero-card { display: block !important; }
+      section { padding: 24px 1.5rem; }
+      .project-card, .cert-card, .skill-card, .stat-box, .contact-item {
+        break-inside: avoid;
+      }
+      .section-header { margin-bottom: 1.5rem; }
+      .cert-modal { display: none !important; }
+      a[href]::after { content: ""; }
+      footer { background: var(--dark); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">Athipat.dev</span>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#about" data-i18n="nav-about">About</a></li>
+        <li><a href="#skills" data-i18n="nav-skills">Skills</a></li>
+        <li><a href="#projects" data-i18n="nav-projects">Projects</a></li>
+        <li><a href="#certifications" data-i18n="nav-certifications">Certificates</a></li>
+        <li><a href="#contact" data-i18n="nav-contact">Contact</a></li>
+      </ul>
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('th')">TH</button>
+      </div>
+      <button class="print-btn" onclick="downloadPDF()">
+        <span aria-hidden="true">⬇️</span><span class="print-btn-label" data-i18n="print-btn-label">Download PDF</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-avatar"><img src="images/avatar.jpg" alt="Athipat Chamnanpa" /></div>
+        <div class="hero-badge" data-i18n="hero-badge">&#128204; Available for Web Developer Role</div>
+        <h1>Athipat<br /><span>Chamnanpa</span></h1>
+        <p class="hero-sub" data-i18n="hero-sub">
+          Frontend Web Developer specialising in React, Tailwind CSS, and full-stack web applications.
+          I build real, production-ready systems — from government portals to inventory management tools.
+        </p>
+        <div class="hero-btns">
+          <a class="btn btn-primary" href="#projects" data-i18n="hero-btn-work">View My Work</a>
+          <a class="btn btn-outline" href="#contact" data-i18n="hero-btn-contact">Get in Touch</a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-card-title" data-i18n="card-title">Technical Proficiency</div>
+
+        <div class="hero-stat">
+          <div class="hero-stat-row">
+            <div class="hero-stat-label">React / JSX</div>
+            <div class="hero-stat-pct">95%</div>
+          </div>
+          <div class="hero-stat-bar"><div class="hero-stat-fill fill-react"></div></div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-row">
+            <div class="hero-stat-label">JavaScript (ES6+)</div>
+            <div class="hero-stat-pct">90%</div>
+          </div>
+          <div class="hero-stat-bar"><div class="hero-stat-fill fill-js"></div></div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-row">
+            <div class="hero-stat-label">Tailwind CSS</div>
+            <div class="hero-stat-pct">92%</div>
+          </div>
+          <div class="hero-stat-bar"><div class="hero-stat-fill fill-tailwind"></div></div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-row">
+            <div class="hero-stat-label" data-i18n="card-ui">UI / UX Design</div>
+            <div class="hero-stat-pct">88%</div>
+          </div>
+          <div class="hero-stat-bar"><div class="hero-stat-fill fill-ui"></div></div>
+        </div>
+        <div class="hero-stat" style="margin-bottom:0">
+          <div class="hero-stat-row">
+            <div class="hero-stat-label">Node.js / REST API</div>
+            <div class="hero-stat-pct">80%</div>
+          </div>
+          <div class="hero-stat-bar"><div class="hero-stat-fill fill-node"></div></div>
+        </div>
+
+        <div class="hero-projects-row">
+          <span class="hero-pill" data-i18n="pill-count">11 Projects Built</span>
+          <span class="hero-pill" data-i18n="pill-expert">React Expert</span>
+          <span class="hero-pill">Mobile-First</span>
+          <span class="hero-pill">Full Stack</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <h3 data-i18n="about-h3">Hi, I'm <span class="highlight">Athipat</span> 👋</h3>
+        <p data-i18n="about-p1">
+          I'm a passionate web developer who builds real, working web applications — not just demos.
+          Over the past year I have designed and developed <span class="highlight">11 projects</span> covering
+          government portals, inventory systems, finance apps, and travel tools.
+        </p>
+        <p data-i18n="about-p2">
+          I specialise in <span class="highlight">React</span> with <span class="highlight">Vite</span>
+          and <span class="highlight">Tailwind CSS</span>, creating fast, mobile-friendly interfaces that
+          connect to REST APIs. I also have backend experience with Node.js and Express.
+        </p>
+        <p data-i18n="about-p3">
+          My most technically involved project is an <span class="highlight">Amazon-to-eBay price tracker and auto-lister</span> —
+          it generates AI-written listings, handles multi-dimension product variants, syncs live price and order updates over
+          Socket.io, and pushes fulfillment tracking automatically — exactly the type of full-stack, real-time work I'm excited to do professionally.
+        </p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-num">11</div>
+          <div class="stat-lbl" data-i18n="stat-projects">Projects Built</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">React</div>
+          <div class="stat-lbl" data-i18n="stat-framework">Primary Framework</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" data-i18n="stat-full-num">Full</div>
+          <div class="stat-lbl" data-i18n="stat-full">Stack Capable</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">TH/EN</div>
+          <div class="stat-lbl" data-i18n="stat-bilingual">Bilingual Apps</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag" data-i18n="skills-tag">Technical Skills</span>
+      <h2 data-i18n="skills-h2">What I Work With</h2>
+      <p data-i18n="skills-p">Core technologies used across all my projects</p>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon">⚛️</div>
+        <div class="skill-name">React</div>
+        <div class="skill-tag">Hooks, Router, Context</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">⚡</div>
+        <div class="skill-name">Vite</div>
+        <div class="skill-tag" data-i18n="vite-sub">Build Tool</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🎨</div>
+        <div class="skill-name">Tailwind CSS</div>
+        <div class="skill-tag" data-i18n="tailwind-sub">Utility-First Styling</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🟨</div>
+        <div class="skill-name">JavaScript</div>
+        <div class="skill-tag">ES6+, JSX</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🌐</div>
+        <div class="skill-name">HTML &amp; CSS</div>
+        <div class="skill-tag" data-i18n="html-sub">Semantic, Responsive</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🟢</div>
+        <div class="skill-name">Node.js</div>
+        <div class="skill-tag">Express, REST API</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📱</div>
+        <div class="skill-name" data-i18n="mobile-name">Mobile-First</div>
+        <div class="skill-tag" data-i18n="mobile-sub">Responsive Design</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🗄️</div>
+        <div class="skill-name">REST APIs</div>
+        <div class="skill-tag">Fetch, Async/Await</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🔀</div>
+        <div class="skill-name">Git</div>
+        <div class="skill-tag" data-i18n="git-sub">Version Control</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🚀</div>
+        <div class="skill-name">Vercel</div>
+        <div class="skill-tag" data-i18n="vercel-sub">Deployment</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🍃</div>
+        <div class="skill-name">MongoDB</div>
+        <div class="skill-tag" data-i18n="mongodb-sub">Database, Mongoose</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🔐</div>
+        <div class="skill-name" data-i18n="jwt-name">JWT Authentication</div>
+        <div class="skill-tag" data-i18n="jwt-sub">Secure Access Control</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag" data-i18n="proj-tag">Portfolio</span>
+      <h2 data-i18n="proj-h2">Projects I've Built</h2>
+      <p data-i18n="proj-p">Real applications — designed, built, and deployed by me</p>
+    </div>
+
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-thumb"><img src="images/screenshots/recipe.png" alt="" loading="lazy" /></div>
+        <div class="project-body">
+          <div class="project-text">
+            <div class="project-top">
+              <div class="project-icon bg-pink">🍳</div>
+              <div class="project-meta">
+                <div class="project-title" data-i18n="p10-title">SGO — Recipe &amp; Cost Manager</div>
+                <div class="project-desc" data-i18n="p10-desc">My original recipe project — a searchable recipe and ingredient costing tool with a live quantity-based cost calculator, ingredient price overrides, inventory tracking, and separate Menu vs Staff Meal tabs, each recipe backed by its own photo gallery.</div>
+              </div>
+            </div>
+            <div class="project-tags">
+              <span class="tag tag-blue">React</span>
+              <span class="tag tag-slate">Node.js / Express</span>
+              <span class="tag tag-green">MongoDB</span>
+              <span class="tag tag-amber" data-i18n="tag-costing">Cost Calculator</span>
+              <span class="tag tag-pink">Mobile-First</span>
+            </div>
+            <div class="project-footer">
+              <a class="btn-demo" href="https://my-react-app-eight-rust.vercel.app" target="_blank" rel="noopener">🔗 Live Demo</a>
+            </div>
+          </div>
+          <div class="project-features">
+          <div class="project-features-label" data-i18n="feat-label">Key Features</div>
+            <ul>
+              <li data-i18n="p10-f1">Live recipe cost calculator that scales with a quantity multiplier</li>
+              <li data-i18n="p10-f2">Ingredient price overrides with inventory tracking</li>
+              <li data-i18n="p10-f3">Menu vs Staff Meal tabs, each recipe with its own photo gallery</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb"><img src="images/screenshots/frtinventory.png" alt="" loading="lazy" /></div>
+        <div class="project-body">
+          <div class="project-text">
+            <div class="project-top">
+              <div class="project-icon bg-green">📦</div>
+              <div class="project-meta">
+                <div class="project-title" data-i18n="p2-title">FRT Inventory System</div>
+                <div class="project-desc" data-i18n="p2-desc">Industrial-grade inventory management tool for stocktaking and variance analysis. Handles file uploads (system stock, tag lists, location lists), tracks matched, uncounted, and unrecognized items across warehouse locations.</div>
+              </div>
+            </div>
+            <div class="project-tags">
+              <span class="tag tag-blue">React</span>
+              <span class="tag tag-green">Tailwind CSS</span>
+              <span class="tag tag-purple" data-i18n="tag-upload">Data Upload</span>
+              <span class="tag tag-amber">Dashboard</span>
+              <span class="tag tag-slate" data-i18n="tag-responsive">Responsive</span>
+            </div>
+            <div class="project-footer">
+              <a class="btn-demo" href="https://frtstock.vercel.app" target="_blank" rel="noopener">🔗 Live Demo</a>
+            </div>
+          </div>
+          <div class="project-features">
+          <div class="project-features-label" data-i18n="feat-label">Key Features</div>
+            <ul>
+              <li data-i18n="p2-f1">Bulk file uploads: system stock, tag lists, location lists, production parts</li>
+              <li data-i18n="p2-f2">Automated matching engine — flags uncounted &amp; unrecognized items</li>
+              <li data-i18n="p2-f3">Variance-analysis dashboard across warehouse locations</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb"><img src="images/screenshots/pu.png" alt="" loading="lazy" /></div>
+        <div class="project-body">
+          <div class="project-text">
+            <div class="project-top">
+              <div class="project-icon bg-purple">📊</div>
+              <div class="project-meta">
+                <div class="project-title" data-i18n="p3-title">PU — Accounting System</div>
+                <div class="project-desc" data-i18n="p3-desc">Business accounting application with authentication, general ledger, chart of accounts, raw materials tracking, cost of finished goods, export declarations, and multi-language (i18n) support.</div>
+              </div>
+            </div>
+            <div class="project-tags">
+              <span class="tag tag-blue">React</span>
+              <span class="tag tag-purple" data-i18n="tag-auth">Auth Guard</span>
+              <span class="tag tag-green">i18n</span>
+              <span class="tag tag-amber" data-i18n="tag-ledger">General Ledger</span>
+              <span class="tag tag-pink" data-i18n="tag-export">Export</span>
+            </div>
+            <div class="project-footer">
+              <a class="btn-demo" href="https://puthailand.vercel.app" target="_blank" rel="noopener">🔗 Live Demo</a>
+            </div>
+          </div>
+          <div class="project-features">
+          <div class="project-features-label" data-i18n="feat-label">Key Features</div>
+            <ul>
+              <li data-i18n="p3-f1">General ledger with chart of accounts</li>
+              <li data-i18n="p3-f2">Raw-material tracking through to cost-of-finished-goods calculation</li>
+              <li data-i18n="p3-f3">Export declaration generation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb"><img src="images/screenshots/productportal.png" alt="" loading="lazy" /></div>
+        <div class="project-body">
+          <div class="project-text">
+            <div class="project-top">
+              <div class="project-icon bg-amber">🛍️</div>
+              <div class="project-meta">
+                <div class="project-title" data-i18n="p4-title">Product Portal</div>
+                <div class="project-desc" data-i18n="p4-desc">Password-protected product catalog secured with JWT authentication and persistent session verification on load. Products can be filtered by category and type through a collapsible sidebar, added individually via a dedicated form, or imported in bulk from an Excel spreadsheet — all wrapped in a clean, dark-themed interface that adapts from a full sidebar on desktop to a mobile topbar with an overlay menu.</div>
+              </div>
+            </div>
+            <div class="project-tags">
+              <span class="tag tag-blue">React</span>
+              <span class="tag tag-amber">JWT Auth</span>
+              <span class="tag tag-green" data-i18n="tag-excel">Excel Upload</span>
+              <span class="tag tag-purple" data-i18n="tag-dark">Dark UI</span>
+              <span class="tag tag-slate">REST API</span>
+            </div>
+            <div class="project-footer">
+              <a class="btn-demo" href="https://productportal-jade.vercel.app" target="_blank" rel="noopener">🔗 Live Demo</a>
+            </div>
+          </div>
+          <div class="project-features">
+          <div class="project-features-label" data-i18n="feat-label">Key Features</div>
+            <ul>
+              <li data-i18n="p4-f1">JWT-authenticated, password-protected catalog access</li>
+              <li data-i18n="p4-f2">Sidebar filtering by category and product type</li>
+              <li data-i18n="p4-f3">Bulk product import via Excel file upload</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb"><img src="images/screenshots/expense.png" alt="" loading="lazy" /></div>
+        <div class="project-body">
+          <div class="project-text">
+            <div class="project-top">
+              <div class="project-icon bg-green">💸</div>
+              <div class="project-meta">
+                <div class="project-title" data-i18n="p5-title">TingTong — Personal Finance App</div>
+                <div class="project-desc" data-i18n="p5-desc">Mobile-first personal finance tracker (Thai Baht). Tracks monthly income, expenses, and fixed bills with a live balance card, bill progress tracker, and spending dashboard.</div>
+              </div>
+            </div>
+            <div class="project-tags">
+              <span class="tag tag-blue">React</span>
+              <span class="tag tag-green">Mobile-First</span>
+              <span class="tag tag-purple">REST API</span>
+              <span class="tag tag-amber" data-i18n="tag-dark-theme">Dark Theme</span>
+              <span class="tag tag-slate">Dashboard</span>
+            </div>
+            <div class="project-footer">
+              <a class="btn-demo" href="https://expense-six-red.vercel.app" target="_blank" rel="noopener">🔗 Live Demo</a>
+            </div>
+          </div>
+          <div class="project-features">
+          <div class="project-features-label" data-i18n="feat-label">Key Features</div>
+            <ul>
+              <li data-i18n="p5-f1">Live balance card — income vs. expenses at a glance</li>
+              <li data-i18n="p5-f2">Fixed-bill payment progress tracker</li>
+              <li data-i18n="p5-f3">Monthly spending analysis dashboard</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb"><img src="images/screenshots/frtforecast.png" alt="" loading="lazy" /></div>
+        <div class="project-body">
+          <div class="project-text">
+            <div class="project-top">
+              <div class="project-icon bg-slate">📈</div>
+              <div class="project-meta">
+                <div class="project-title" data-i18n="p7-title">FRT Forecast Monitor</div>
+                <div class="project-desc" data-i18n="p7-desc">Freight forecasting and stock monitoring dashboard with collapsible sidebar, responsive layout, and two-panel navigation (Forecast vs Stock Monitor).</div>
+              </div>
+            </div>
+            <div class="project-tags">
+              <span class="tag tag-blue">React</span>
+              <span class="tag tag-slate">Dashboard</span>
+              <span class="tag tag-green" data-i18n="tag-responsive">Responsive</span>
+              <span class="tag tag-purple" data-i18n="tag-sidebar">Sidebar Nav</span>
+            </div>
+            <div class="project-footer">
+              <a class="btn-demo" href="https://frtforecast.vercel.app" target="_blank" rel="noopener">🔗 Live Demo</a>
+            </div>
+          </div>
+          <div class="project-features">
+          <div class="project-features-label" data-i18n="feat-label">Key Features</div>
+            <ul>
+              <li data-i18n="p7-f1">Two-panel navigation: Forecast view vs. Stock Monitor view</li>
+              <li data-i18n="p7-f2">Collapsible sidebar navigation</li>
+              <li data-i18n="p7-f3">Fully responsive dashboard layout</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb"><img src="images/screenshots/amazon-tracker.png" alt="" loading="lazy" /></div>
+        <div class="project-body">
+          <div class="project-text">
+            <div class="project-top">
+              <div class="project-icon bg-amber">🛒</div>
+              <div class="project-meta">
+                <div class="project-title" data-i18n="p8-title">Amazon → eBay Price Tracker &amp; Auto-Lister</div>
+                <div class="project-desc" data-i18n="p8-desc">Tracks Amazon product prices in real time and automatically builds and publishes matching eBay listings — including AI-generated titles/descriptions and multi-variant products (e.g. Color + Size).</div>
+              </div>
+            </div>
+            <div class="project-tags">
+              <span class="tag tag-blue">React</span>
+              <span class="tag tag-green">Tailwind CSS</span>
+              <span class="tag tag-amber" data-i18n="tag-price">Price Monitoring</span>
+              <span class="tag tag-purple" data-i18n="tag-realtime">Real-Time</span>
+              <span class="tag tag-slate">Node.js / Express</span>
+            </div>
+            <div class="project-footer">
+              <a class="btn-demo" href="https://amazon-theta-liard.vercel.app" target="_blank" rel="noopener">🔗 Live Demo</a>
+            </div>
+          </div>
+          <div class="project-features">
+          <div class="project-features-label" data-i18n="feat-label">Key Features</div>
+            <ul>
+              <li data-i18n="p8-f1">Automated eBay listing creation with AI-generated titles &amp; descriptions</li>
+              <li data-i18n="p8-f2">Multi-dimension variant support (e.g. Color + Size) with per-variant photo galleries</li>
+              <li data-i18n="p8-f3">Live Socket.io price-drop alerts and listing sync status</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb"><img src="images/screenshots/milk.png" alt="" loading="lazy" /></div>
+        <div class="project-body">
+          <div class="project-text">
+            <div class="project-top">
+              <div class="project-icon bg-blue">🍼</div>
+              <div class="project-meta">
+                <div class="project-title" data-i18n="p9-title">Baby Milk Tracker</div>
+                <div class="project-desc" data-i18n="p9-desc">Mobile app for tracking a baby's milk intake with real-time totals, statistics strip, feeding time-of-day chart, history log, and inline edit/delete modals. Uses custom React hooks for data management.</div>
+              </div>
+            </div>
+            <div class="project-tags">
+              <span class="tag tag-blue">React</span>
+              <span class="tag tag-pink">Mobile-First</span>
+              <span class="tag tag-green" data-i18n="tag-charts">Charts</span>
+              <span class="tag tag-purple" data-i18n="tag-hooks">Custom Hooks</span>
+              <span class="tag tag-slate">REST API</span>
+            </div>
+            <div class="project-footer">
+              <a class="btn-demo" href="https://milk-tracker-rho-topaz.vercel.app" target="_blank" rel="noopener">🔗 Live Demo</a>
+            </div>
+          </div>
+          <div class="project-features">
+          <div class="project-features-label" data-i18n="feat-label">Key Features</div>
+            <ul>
+              <li data-i18n="p9-f1">Real-time intake totals and statistics strip</li>
+              <li data-i18n="p9-f2">Feeding time-of-day chart</li>
+              <li data-i18n="p9-f3">Chronological history log with inline edit/delete</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb"><img src="images/screenshots/abt.png" alt="" loading="lazy" /></div>
+        <div class="project-body">
+          <div class="project-text">
+            <div class="project-top">
+              <div class="project-icon bg-blue">🏛️</div>
+              <div class="project-meta">
+                <div class="project-title" data-i18n="p1-title">ABT — Local Government Website</div>
+                <div class="project-desc" data-i18n="p1-desc">Full-featured Thai Subdistrict Administrative Organisation (อบต.) website. Includes public portal with news, procurement, finance, staff, e-services, complaint system, and a complete admin CMS for content management.</div>
+              </div>
+            </div>
+            <div class="project-tags">
+              <span class="tag tag-blue">React</span>
+              <span class="tag tag-blue">Vite</span>
+              <span class="tag tag-green">Tailwind CSS</span>
+              <span class="tag tag-purple" data-i18n="tag-cms">Admin CMS</span>
+              <span class="tag tag-amber">Thai/English</span>
+              <span class="tag tag-slate" data-i18n="tag-15pages">15+ Pages</span>
+            </div>
+            <div class="project-footer">
+              <a class="btn-demo" href="https://maesaiphayao.vercel.app" target="_blank" rel="noopener">🔗 Live Demo</a>
+            </div>
+          </div>
+          <div class="project-features">
+          <div class="project-features-label" data-i18n="feat-label">Key Features</div>
+            <ul>
+              <li data-i18n="p1-f1">Public portal sections: news, budget, procurement, staff directory, e-services</li>
+              <li data-i18n="p1-f2">Citizen complaint &amp; corruption-report submission system</li>
+              <li data-i18n="p1-f3">Full admin CMS — drag-and-block content editing, Excel &amp; image uploads</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag" data-i18n="cert-tag">Certifications</span>
+      <h2 data-i18n="cert-h2">Certifications &amp; Courses</h2>
+      <p data-i18n="cert-p">Ongoing learning to back up hands-on project work</p>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-icon bg-blue">🎓</div>
+      <div class="cert-meta">
+        <div class="cert-title" data-i18n="c1-title">Web Developer Path: HTML &amp; CSS Fundamentals</div>
+        <div class="cert-issuer" data-i18n="c1-issuer">Chulalongkorn University · Thai MOOC (Thailand Cyber University Project) — issued 27 July 2026</div>
+        <div class="cert-details">
+          <span class="tag tag-blue" data-i18n="c1-hours">10 Hours</span>
+          <span class="tag tag-green">HTML</span>
+          <span class="tag tag-green">CSS</span>
+          <span class="tag tag-slate">CU 00149</span>
+        </div>
+        <a class="btn-demo" href="certificates/cu-00149-html-css-fundamentals.pdf" target="_blank" rel="noopener" onclick="return openCertModal(this.href)" data-i18n="c1-view">📄 View Certificate</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag" data-i18n="contact-tag">Get in Touch</span>
+      <h2 data-i18n="contact-h2">Let's Work Together</h2>
+      <p data-i18n="contact-p">I'm ready to bring my skills to your team and contribute from day one.</p>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-item">
+        <div class="contact-ico">📞</div>
+        <div>
+          <div class="contact-lbl" data-i18n="lbl-phone">PHONE</div>
+          <div class="contact-val">085-107-7620</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-ico">✉️</div>
+        <div>
+          <div class="contact-lbl" data-i18n="lbl-email">EMAIL</div>
+          <div class="contact-val">athipaty@gmail.com</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-ico">👤</div>
+        <div>
+          <div class="contact-lbl" data-i18n="lbl-name">FULL NAME</div>
+          <div class="contact-val">Athipat Chamnanpa</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-ico">💻</div>
+        <div>
+          <div class="contact-lbl" data-i18n="lbl-role">ROLE APPLYING FOR</div>
+          <div class="contact-val" data-i18n="val-role">Web Developer</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-ico">⚛️</div>
+        <div>
+          <div class="contact-lbl" data-i18n="lbl-stack">PRIMARY STACK</div>
+          <div class="contact-val">React · Tailwind CSS · Node.js</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p data-i18n="footer">Built by Athipat Chamnanpa &nbsp;·&nbsp; React Developer &nbsp;·&nbsp; 2025</p>
+</footer>
+
+<!-- CERTIFICATE VIEWER MODAL -->
+<div class="cert-modal" id="certModal" onclick="if(event.target===this) closeCertModal()">
+  <div class="cert-modal-inner">
+    <button class="cert-modal-close" onclick="closeCertModal()" aria-label="Close">&times;</button>
+    <iframe id="certFrame" class="cert-modal-frame" title="Certificate preview"></iframe>
+  </div>
+</div>
+
+<script>
+  const translations = {
+    en: {
+      "nav-about":    "About",
+      "nav-skills":   "Skills",
+      "nav-projects": "Projects",
+      "nav-certifications": "Certificates",
+      "nav-contact":  "Contact",
+      "print-btn-label": "Download PDF",
+
+      "hero-badge":       "📌 Available for Web Developer Position",
+      "hero-sub":         "A Frontend Web Developer with demonstrated proficiency in React, Tailwind CSS, and full-stack web application development. I deliver production-ready systems — including government information portals and enterprise inventory management solutions.",
+      "hero-btn-work":    "View Portfolio",
+      "hero-btn-contact": "Contact Me",
+      "card-title":       "Technical Proficiency",
+      "card-ui":          "UI / UX Design",
+      "pill-count":       "11 Projects Completed",
+      "pill-expert":      "React Specialist",
+
+      "about-h3": "I am <span class=\"highlight\">Athipat Chamnanpa</span>",
+      "about-p1": "I am a dedicated web developer committed to building fully functional, production-grade web applications. I have independently designed and developed <span class=\"highlight\">11 projects</span> spanning government information portals, warehouse inventory systems, and financial management applications.",
+      "about-p2": "My primary expertise lies in <span class=\"highlight\">React</span>, <span class=\"highlight\">Vite</span>, and <span class=\"highlight\">Tailwind CSS</span>, enabling me to deliver fast, responsive user interfaces integrated with REST APIs. I also possess backend development experience with Node.js and Express.",
+      "about-p3": "My most technically involved project is an <span class=\"highlight\">Amazon-to-eBay price tracker and auto-lister</span> — it generates AI-written listings, handles multi-dimension product variants, syncs live price and order updates over Socket.io, and pushes fulfillment tracking automatically. It's exactly the kind of full-stack, real-time system development I am seeking to pursue professionally.",
+      "stat-projects":  "Projects Completed",
+      "stat-framework": "Primary Framework",
+      "stat-full-num":  "Full",
+      "stat-full":      "Stack Capability",
+      "stat-bilingual": "Bilingual Systems",
+
+      "skills-tag": "Technical Competencies",
+      "skills-h2":  "Areas of Expertise",
+      "skills-p":   "Core technologies applied across all delivered projects",
+      "vite-sub":     "Build Tooling",
+      "tailwind-sub": "Utility-First Styling",
+      "html-sub":     "Semantic, Responsive",
+      "mobile-name":  "Mobile-First",
+      "mobile-sub":   "Responsive Design",
+      "git-sub":      "Version Control",
+      "vercel-sub":   "Deployment",
+      "mongodb-sub":  "Database, Mongoose",
+      "jwt-name":     "JWT Authentication",
+      "jwt-sub":      "Secure Access Control",
+
+      "proj-tag": "Project Portfolio",
+      "proj-h2":  "Delivered Projects",
+      "proj-p":   "Production applications independently designed, developed, and deployed",
+
+      "p1-title": "ABT — Local Government Website",
+      "p1-desc":  "A comprehensive website for a Thai Subdistrict Administrative Organisation (อบต.), featuring a public information portal with sections for news, procurement records, financial reporting, personnel, e-services, and complaint submission, alongside a fully functional content management system for administrators.",
+      "p1-f1": "Public portal sections: news, budget, procurement, staff directory, e-services",
+      "p1-f2": "Citizen complaint &amp; corruption-report submission system",
+      "p1-f3": "Full admin CMS — drag-and-block content editing, Excel &amp; image uploads",
+
+      "p2-title": "FRT — Inventory Management System",
+      "p2-desc":  "An enterprise-level inventory management system designed for stocktaking operations and variance analysis. The system supports bulk file imports for system stock, tag lists, and location data, and provides detailed tracking of matched, uncounted, and unrecognised items across warehouse facilities.",
+      "p2-f1": "Bulk file uploads: system stock, tag lists, location lists, production parts",
+      "p2-f2": "Automated matching engine — flags uncounted &amp; unrecognized items",
+      "p2-f3": "Variance-analysis dashboard across warehouse locations",
+
+      "p3-title": "PU — Business Accounting System",
+      "p3-desc":  "A business accounting application with role-based authentication, general ledger management, chart of accounts, raw material tracking, cost of finished goods calculation, export declaration generation, and multilingual (i18n) support.",
+      "p3-f1": "General ledger with chart of accounts",
+      "p3-f2": "Raw-material tracking through to cost-of-finished-goods calculation",
+      "p3-f3": "Export declaration generation",
+
+      "p4-title": "Product Portal — Catalogue Management",
+      "p4-desc":  "A password-protected product catalogue secured with JWT authentication and persistent session verification on load. Products can be filtered by category and type through a collapsible sidebar, added individually via a dedicated form, or imported in bulk from an Excel spreadsheet — all wrapped in a clean, dark-themed interface that adapts from a full sidebar on desktop to a mobile topbar with an overlay menu.",
+      "p4-f1": "JWT-authenticated, password-protected catalog access",
+      "p4-f2": "Sidebar filtering by category and product type",
+      "p4-f3": "Bulk product import via Excel file upload",
+
+      "p5-title": "TingTong — Personal Finance Manager",
+      "p5-desc":  "A mobile-first personal finance management application (Thai Baht) for tracking monthly income, expenditure, and recurring bills. Features include a real-time balance overview, bill payment progress indicators, and a comprehensive spending analysis dashboard.",
+      "p5-f1": "Live balance card — income vs. expenses at a glance",
+      "p5-f2": "Fixed-bill payment progress tracker",
+      "p5-f3": "Monthly spending analysis dashboard",
+
+      "p7-title": "FRT — Freight Forecast Monitor",
+      "p7-desc":  "A freight forecasting and stock level monitoring dashboard featuring a collapsible sidebar navigation, a fully responsive layout, and dual-panel views for forecast comparison and stock monitoring.",
+      "p7-f1": "Two-panel navigation: Forecast view vs. Stock Monitor view",
+      "p7-f2": "Collapsible sidebar navigation",
+      "p7-f3": "Fully responsive dashboard layout",
+
+      "p8-title": "Amazon → eBay Price Tracker &amp; Auto-Lister",
+      "p8-desc":  "Tracks Amazon product prices in real time and automatically builds and publishes matching eBay listings — including AI-generated titles/descriptions and multi-variant products (e.g. Color + Size).",
+      "p8-f1": "Automated eBay listing creation with AI-generated titles &amp; descriptions",
+      "p8-f2": "Multi-dimension variant support (e.g. Color + Size) with per-variant photo galleries",
+      "p8-f3": "Live Socket.io price-drop alerts and listing sync status",
+
+      "p9-title": "Infant Milk Intake Tracker",
+      "p9-desc":  "A mobile application for recording and monitoring an infant's daily milk consumption, featuring real-time totals, statistical summaries, a time-of-day feeding chart, a chronological history log, and inline record management via modal dialogs. Built with custom React hooks.",
+      "p9-f1": "Real-time intake totals and statistics strip",
+      "p9-f2": "Feeding time-of-day chart",
+      "p9-f3": "Chronological history log with inline edit/delete",
+
+      "p10-title": "SGO — Recipe & Cost Manager",
+      "p10-desc":  "My original recipe project — a searchable recipe and ingredient costing tool with a live quantity-based cost calculator, ingredient price overrides, inventory tracking, and separate Menu vs Staff Meal tabs, each recipe backed by its own photo gallery.",
+      "p10-f1": "Live recipe cost calculator that scales with a quantity multiplier",
+      "p10-f2": "Ingredient price overrides with inventory tracking",
+      "p10-f3": "Menu vs Staff Meal tabs, each recipe with its own photo gallery",
+
+      "feat-label": "Key Features",
+
+      "tag-cms":        "Admin CMS",
+      "tag-15pages":    "15+ Pages",
+      "tag-upload":     "Data Import",
+      "tag-responsive": "Responsive",
+      "tag-auth":       "Authentication",
+      "tag-ledger":     "General Ledger",
+      "tag-export":     "Export",
+      "tag-excel":      "Excel Import",
+      "tag-dark":       "Dark UI",
+      "tag-dark-theme": "Dark Theme",
+      "tag-sidebar":    "Sidebar Navigation",
+      "tag-price":      "Price Monitoring",
+      "tag-realtime":   "Real-Time",
+      "tag-charts":     "Data Charts",
+      "tag-hooks":      "Custom Hooks",
+      "tag-costing":    "Cost Calculator",
+
+      "cert-tag": "Certifications",
+      "cert-h2":  "Certifications & Courses",
+      "cert-p":   "Ongoing learning to back up hands-on project work",
+      "c1-title":  "Web Developer Path: HTML &amp; CSS Fundamentals",
+      "c1-issuer": "Chulalongkorn University · Thai MOOC (Thailand Cyber University Project) — issued 27 July 2026",
+      "c1-hours":  "10 Hours",
+      "c1-view":   "📄 View Certificate",
+
+      "contact-tag": "Contact Information",
+      "contact-h2":  "Professional Enquiries",
+      "contact-p":   "I am available to discuss opportunities and am prepared to contribute immediately upon engagement.",
+      "lbl-phone":   "TELEPHONE",
+      "lbl-email":   "EMAIL ADDRESS",
+      "lbl-name":    "FULL NAME",
+      "lbl-role":    "POSITION APPLIED FOR",
+      "val-role":    "Web Developer",
+      "lbl-stack":   "PRIMARY TECHNOLOGY STACK",
+
+      "footer": "Portfolio of Athipat Chamnanpa &nbsp;·&nbsp; Frontend Web Developer &nbsp;·&nbsp; 2025"
+    },
+
+    th: {
+      "nav-about":    "เกี่ยวกับ",
+      "nav-skills":   "ทักษะ",
+      "nav-projects": "ผลงาน",
+      "nav-certifications": "ใบประกาศนียบัตร",
+      "nav-contact":  "ติดต่อ",
+      "print-btn-label": "ดาวน์โหลด PDF",
+
+      "hero-badge":       "📌 พร้อมรับตำแหน่งนักพัฒนาเว็บไซต์",
+      "hero-sub":         "นักพัฒนาเว็บไซต์ด้าน Frontend ที่มีความเชี่ยวชาญด้าน React, Tailwind CSS และการพัฒนาเว็บแบบ Full-stack ผมมุ่งเน้นการส่งมอบระบบที่พร้อมใช้งานในระดับ Production ทั้งเว็บไซต์ราชการและระบบจัดการองค์กรระดับ Enterprise",
+      "hero-btn-work":    "ดูผลงาน",
+      "hero-btn-contact": "ติดต่อผม",
+      "card-title":       "ความสามารถด้านเทคนิค",
+      "card-ui":          "UI / UX Design",
+      "pill-count":       "ผลงาน 11 โปรเจกต์",
+      "pill-expert":      "ผู้เชี่ยวชาญ React",
+
+      "about-h3": "ผม<span class=\"highlight\">อธิปัตย์ ชำนาญปา</span>",
+      "about-p1": "ผมเป็นนักพัฒนาเว็บไซต์ที่มุ่งมั่นในการพัฒนาแอปพลิเคชันเว็บที่ใช้งานได้จริงในระดับ Production ผมได้ออกแบบและพัฒนา <span class=\"highlight\">11 โปรเจกต์</span> อย่างเป็นอิสระ ครอบคลุมทั้งเว็บไซต์ราชการ ระบบบริหารจัดการคลังสินค้า และแอปพลิเคชันการเงิน",
+      "about-p2": "ความเชี่ยวชาญหลักของผมอยู่ที่ <span class=\"highlight\">React</span>, <span class=\"highlight\">Vite</span> และ <span class=\"highlight\">Tailwind CSS</span> ซึ่งช่วยให้สามารถพัฒนา User Interface ที่รวดเร็วและรองรับการใช้งานบนอุปกรณ์ทุกขนาดพร้อมเชื่อมต่อ REST API นอกจากนี้ยังมีประสบการณ์ด้านการพัฒนา Backend ด้วย Node.js และ Express",
+      "about-p3": "โปรเจกต์ที่มีความซับซ้อนทางเทคนิคมากที่สุดของผมคือ<span class=\"highlight\">ระบบติดตามราคา Amazon และลงขาย eBay อัตโนมัติ</span> ซึ่งสร้างประกาศขายด้วย AI รองรับตัวเลือกสินค้าหลายมิติ ซิงค์ราคาและคำสั่งซื้อแบบ Real-time ผ่าน Socket.io และส่งเลขพัสดุให้อัตโนมัติ — ตรงกับประเภทงานพัฒนาระบบ Full-stack แบบ Real-time ที่ผมต้องการทำในระดับวิชาชีพ",
+      "stat-projects":  "โปรเจกต์ที่พัฒนาแล้ว",
+      "stat-framework": "เฟรมเวิร์กหลัก",
+      "stat-full-num":  "Full",
+      "stat-full":      "ความสามารถ Full Stack",
+      "stat-bilingual": "ระบบสองภาษา",
+
+      "skills-tag": "ความสามารถด้านเทคนิค",
+      "skills-h2":  "เทคโนโลยีที่เชี่ยวชาญ",
+      "skills-p":   "เทคโนโลยีหลักที่ใช้ในการพัฒนาโปรเจกต์ทั้งหมด",
+      "vite-sub":     "เครื่องมือ Build",
+      "tailwind-sub": "Styling แบบ Utility-First",
+      "html-sub":     "Semantic, Responsive",
+      "mobile-name":  "Mobile-First",
+      "mobile-sub":   "การออกแบบ Responsive",
+      "git-sub":      "การควบคุมเวอร์ชัน",
+      "vercel-sub":   "การ Deploy ระบบ",
+      "mongodb-sub":  "ฐานข้อมูล, Mongoose",
+      "jwt-name":     "JWT Authentication",
+      "jwt-sub":      "ระบบควบคุมการเข้าถึงอย่างปลอดภัย",
+
+      "proj-tag": "ผลงานการพัฒนา",
+      "proj-h2":  "โปรเจกต์ที่พัฒนาแล้ว",
+      "proj-p":   "แอปพลิเคชันจริงที่ออกแบบ พัฒนา และ Deploy อย่างเป็นอิสระ",
+
+      "p1-title": "ABT — เว็บไซต์องค์การบริหารส่วนตำบล",
+      "p1-desc":  "เว็บไซต์ครบวงจรสำหรับองค์การบริหารส่วนตำบล (อบต.) ประกอบด้วยพอร์ทัลข้อมูลสาธารณะที่มีหมวดหมู่ข่าวสาร จัดซื้อจัดจ้าง รายงานการเงิน บุคลากร บริการอิเล็กทรอนิกส์ และระบบรับเรื่องร้องเรียน พร้อมระบบ CMS สำหรับผู้ดูแลระบบ",
+      "p1-f1": "พอร์ทัลสาธารณะ: ข่าวสาร งบประมาณ จัดซื้อจัดจ้าง บุคลากร บริการอิเล็กทรอนิกส์",
+      "p1-f2": "ระบบรับเรื่องร้องเรียนและแจ้งเบาะแสทุจริต",
+      "p1-f3": "ระบบ CMS ครบวงจร แก้ไขเนื้อหาแบบบล็อก อัปโหลด Excel และรูปภาพ",
+
+      "p2-title": "FRT — ระบบบริหารจัดการคลังสินค้า",
+      "p2-desc":  "ระบบบริหารจัดการคลังสินค้าระดับองค์กร สำหรับการดำเนินการนับสต็อกและวิเคราะห์ความแตกต่าง รองรับการนำเข้าข้อมูลแบบ Bulk จากไฟล์สต็อกระบบ รายการ Tag และรายการที่ตั้ง พร้อมรายงานสินค้าที่ตรงกัน ยังไม่ได้นับ และไม่ระบุตัวตน",
+      "p2-f1": "นำเข้าข้อมูลแบบ Bulk: สต็อกระบบ รายการ Tag รายการที่ตั้ง ชิ้นส่วนการผลิต",
+      "p2-f2": "ระบบจับคู่อัตโนมัติ ตรวจจับรายการที่ยังไม่ได้นับและไม่ระบุตัวตน",
+      "p2-f3": "Dashboard วิเคราะห์ความแตกต่างแยกตามที่ตั้งคลังสินค้า",
+
+      "p3-title": "PU — ระบบบัญชีธุรกิจ",
+      "p3-desc":  "แอปพลิเคชันบัญชีสำหรับธุรกิจ ประกอบด้วยระบบยืนยันตัวตนตามบทบาท บัญชีแยกประเภท ผังบัญชี การติดตามวัตถุดิบ การคำนวณต้นทุนสินค้าสำเร็จรูป การออกใบกำกับส่งออก และการรองรับหลายภาษา",
+      "p3-f1": "บัญชีแยกประเภทพร้อมผังบัญชี",
+      "p3-f2": "ติดตามวัตถุดิบจนถึงการคำนวณต้นทุนสินค้าสำเร็จรูป",
+      "p3-f3": "ออกใบกำกับส่งออก",
+
+      "p4-title": "Product Portal — ระบบจัดการแคตตาล็อกสินค้า",
+      "p4-desc":  "ระบบแคตตาล็อกสินค้าที่มีการรักษาความปลอดภัยด้วยรหัสผ่านและ JWT Authentication พร้อมตรวจสอบสถานะการเข้าสู่ระบบทุกครั้งที่โหลดหน้า กรองสินค้าตามหมวดหมู่และประเภทผ่าน Sidebar เพิ่มสินค้าทีละรายการผ่านฟอร์ม หรือนำเข้าจำนวนมากจากไฟล์ Excel ทั้งหมดอยู่ใน User Interface ธีมดำที่ปรับเปลี่ยนได้ตั้งแต่ Sidebar เต็มรูปแบบบนเดสก์ท็อปไปจนถึงแถบเมนูมือถือแบบ Overlay",
+      "p4-f1": "เข้าถึงแคตตาล็อกด้วยรหัสผ่านและ JWT Authentication",
+      "p4-f2": "กรองสินค้าตามหมวดหมู่และประเภทผ่าน Sidebar",
+      "p4-f3": "นำเข้าสินค้าจำนวนมากผ่านไฟล์ Excel",
+
+      "p5-title": "TingTong — ระบบจัดการการเงินส่วนบุคคล",
+      "p5-desc":  "แอปพลิเคชันจัดการการเงินส่วนบุคคลแบบ Mobile-first (สกุลเงินบาท) สำหรับติดตามรายรับและรายจ่ายรายเดือน และการจัดการค่าใช้จ่ายประจำ มีการแสดงยอดคงเหลือแบบ Real-time ตัวบ่งชี้การชำระค่าบริการ และ Dashboard วิเคราะห์การใช้จ่าย",
+      "p5-f1": "การ์ดยอดคงเหลือแบบ Real-time เทียบรายรับ-รายจ่าย",
+      "p5-f2": "ตัวติดตามความคืบหน้าการชำระค่าใช้จ่ายประจำ",
+      "p5-f3": "Dashboard วิเคราะห์การใช้จ่ายรายเดือน",
+
+      "p7-title": "FRT — ระบบติดตามการพยากรณ์สินค้า",
+      "p7-desc":  "Dashboard สำหรับพยากรณ์สินค้าและติดตามระดับสต็อก มี Sidebar Navigation ที่ย่อ-ขยายได้ Layout ที่รองรับการใช้งานทุกอุปกรณ์ และมุมมองคู่ขนานสำหรับการเปรียบเทียบการพยากรณ์และการติดตามสต็อก",
+      "p7-f1": "มุมมองคู่ขนาน: การพยากรณ์ vs การติดตามสต็อก",
+      "p7-f2": "Sidebar Navigation แบบย่อ-ขยายได้",
+      "p7-f3": "Layout ตอบสนองทุกขนาดหน้าจอ",
+
+      "p8-title": "ระบบติดตามราคา Amazon และลงขาย eBay อัตโนมัติ",
+      "p8-desc":  "ติดตามราคาสินค้า Amazon แบบ Real-time และสร้าง/เผยแพร่ประกาศขายบน eBay โดยอัตโนมัติ รวมถึงหัวข้อและคำอธิบายที่สร้างด้วย AI และสินค้าหลายตัวเลือก (เช่น สี + ขนาด)",
+      "p8-f1": "สร้างประกาศขาย eBay อัตโนมัติ พร้อมหัวข้อและคำอธิบายจาก AI",
+      "p8-f2": "รองรับตัวเลือกสินค้าหลายมิติ (เช่น สี + ขนาด) พร้อมชุดรูปภาพต่อตัวเลือก",
+      "p8-f3": "แจ้งเตือนราคาลดแบบ Real-time ผ่าน Socket.io",
+
+      "p9-title": "แอปพลิเคชันบันทึกปริมาณนมทารก",
+      "p9-desc":  "แอปพลิเคชันมือถือสำหรับบันทึกและติดตามปริมาณนมของทารกรายวัน มีฟีเจอร์แสดงยอดรวมแบบ Real-time สรุปสถิติ กราฟแสดงเวลาที่ดื่มนม ประวัติการบันทึกตามลำดับเวลา และการจัดการข้อมูลผ่าน Modal โดยพัฒนาด้วย Custom React Hooks",
+      "p9-f1": "ยอดรวมและสถิติแบบ Real-time",
+      "p9-f2": "กราฟแสดงช่วงเวลาที่ดื่มนม",
+      "p9-f3": "ประวัติการบันทึกตามลำดับเวลา แก้ไข/ลบได้ทันที",
+
+      "p10-title": "SGO — ระบบจัดการสูตรอาหารและต้นทุน",
+      "p10-desc":  "โปรเจกต์สูตรอาหารดั้งเดิมของผม — เครื่องมือค้นหาสูตรอาหารและคำนวณต้นทุนวัตถุดิบแบบ Real-time ปรับตามจำนวนที่ต้องการ ปรับราคาวัตถุดิบเองได้ ติดตามสต็อกวัตถุดิบ พร้อมแท็บแยกเมนูขายและเมนูพนักงาน แต่ละสูตรมีคลังภาพของตัวเอง",
+      "p10-f1": "คำนวณต้นทุนสูตรอาหารแบบ Real-time ปรับตามตัวคูณจำนวน",
+      "p10-f2": "ปรับราคาวัตถุดิบเองได้ พร้อมติดตามสต็อก",
+      "p10-f3": "แท็บเมนูขาย vs เมนูพนักงาน แต่ละสูตรมีคลังภาพของตัวเอง",
+
+      "feat-label": "จุดเด่น",
+
+      "tag-cms":        "ระบบ CMS",
+      "tag-15pages":    "15+ หน้า",
+      "tag-upload":     "นำเข้าข้อมูล",
+      "tag-responsive": "Responsive",
+      "tag-auth":       "ระบบยืนยันตัวตน",
+      "tag-ledger":     "บัญชีแยกประเภท",
+      "tag-export":     "ส่งออกข้อมูล",
+      "tag-excel":      "นำเข้า Excel",
+      "tag-dark":       "ธีมดำ",
+      "tag-dark-theme": "ธีมดำ",
+      "tag-sidebar":    "Sidebar Navigation",
+      "tag-price":      "ติดตามราคา",
+      "tag-realtime":   "Real-Time",
+      "tag-charts":     "กราฟข้อมูล",
+      "tag-hooks":      "Custom Hooks",
+      "tag-costing":    "คำนวณต้นทุน",
+
+      "cert-tag": "ใบประกาศนียบัตร",
+      "cert-h2":  "ใบประกาศนียบัตรและหลักสูตร",
+      "cert-p":   "การเรียนรู้อย่างต่อเนื่องเพื่อสนับสนุนการทำงานจริง",
+      "c1-title":  "สู่การเป็นนักพัฒนาเว็บ: การสร้างหน้าเว็บเบื้องต้นด้วย HTML และ CSS",
+      "c1-issuer": "จุฬาลงกรณ์มหาวิทยาลัย · Thai MOOC (โครงการมหาวิทยาลัยไซเบอร์ไทย) — ออกให้เมื่อวันที่ 27 กรกฎาคม 2569",
+      "c1-hours":  "10 ชั่วโมง",
+      "c1-view":   "📄 ดูใบประกาศนียบัตร",
+
+      "contact-tag": "ข้อมูลการติดต่อ",
+      "contact-h2":  "สนใจร่วมงาน",
+      "contact-p":   "ผมยินดีให้ข้อมูลเพิ่มเติมเกี่ยวกับประสบการณ์และความสามารถ และพร้อมเริ่มปฏิบัติงานได้ทันทีเมื่อได้รับการติดต่อ",
+      "lbl-phone":   "หมายเลขโทรศัพท์",
+      "lbl-email":   "ที่อยู่อีเมล",
+      "lbl-name":    "ชื่อ-นามสกุล",
+      "lbl-role":    "ตำแหน่งที่สมัคร",
+      "val-role":    "นักพัฒนาเว็บไซต์",
+      "lbl-stack":   "เทคโนโลยีหลักที่ใช้",
+
+      "footer": "ผลงานของ นายอธิปัตย์ ชำนาญปา &nbsp;·&nbsp; นักพัฒนาเว็บไซต์ Frontend &nbsp;·&nbsp; 2568"
+    }
+  };
+
+  let currentLang = 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    const t = translations[lang];
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+    });
+
+    document.documentElement.lang = lang === 'th' ? 'th' : 'en';
+  }
+
+  function openCertModal(url) {
+    document.getElementById('certFrame').src = url;
+    document.getElementById('certModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    return false; // prevent the anchor's default new-tab navigation
+  }
+
+  function closeCertModal() {
+    document.getElementById('certModal').classList.remove('open');
+    document.getElementById('certFrame').src = '';
+    document.body.style.overflow = '';
+  }
+
+  function downloadPDF() {
+    const originalTitle = document.title;
+    document.title = 'Athipat Chamnanpa (อธิปัตย์ ชำนาญปา) - Portfolio';
+    window.print();
+    document.title = originalTitle;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeCertModal();
+  });
+</script>
+
+</body>
+</html>
