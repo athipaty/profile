@@ -406,8 +406,10 @@
       .hero-card { display: block !important; }
       section { padding: 24px 1.5rem; }
       .project-card, .cert-card, .skill-card, .stat-box, .contact-item {
-        break-inside: avoid;
+        break-inside: avoid; page-break-inside: avoid;
       }
+      .project-card { align-items: flex-start; }
+      .project-thumb { height: 380px; }
       .section-header { margin-bottom: 1.5rem; }
       .cert-modal { display: none !important; }
       a[href]::after { content: ""; }
