@@ -1310,7 +1310,7 @@
     }
   };
 
-  let currentLang = 'en';
+  let currentLang = 'th';
 
   function setLang(lang) {
     currentLang = lang;
@@ -1351,6 +1351,8 @@
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeCertModal();
   });
+
+  setLang('th'); // default language
 </script>
 
 </body>
