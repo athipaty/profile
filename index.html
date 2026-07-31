@@ -87,6 +87,7 @@
       gap: 4rem;
       align-items: center;
     }
+    .hero-text { text-align: center; display: flex; flex-direction: column; align-items: center; }
     .hero-avatar {
       width: 190px; height: 190px; border-radius: 50%;
       overflow: hidden; margin-bottom: 1.4rem;
@@ -115,7 +116,7 @@
       font-size: 1.1rem; color: #94a3b8;
       max-width: 480px; margin-bottom: 2rem; line-height: 1.7;
     }
-    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
     .btn {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 12px 26px; border-radius: 99px;
@@ -388,15 +389,13 @@
       .hero-grid, .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .hero-card { display: none; }
       .hero h1 { font-size: 2.2rem; }
-      .hero-avatar { margin-left: auto; margin-right: auto; }
-      .hero-badge { display: flex; width: fit-content; margin-left: auto; margin-right: auto; }
       .nav-links { display: none; }
       .print-btn-label { display: none; }
       .print-btn { padding: 7px 10px; }
       .stats-grid { grid-template-columns: 1fr 1fr; }
       .project-card { flex-direction: column; }
       .project-thumb {
-        width: calc(100% - 28px); height: 700px; flex-shrink: 0;
+        width: calc(100% - 28px); height: 570px; flex-shrink: 0;
         margin: 14px 14px 0 14px; box-sizing: border-box;
       }
       .project-features ul { grid-template-columns: 1fr; }
@@ -452,7 +451,7 @@
 <section id="hero">
   <div class="container">
     <div class="hero-grid">
-      <div>
+      <div class="hero-text">
         <div class="hero-avatar"><img src="https://center-kitchen-backend.onrender.com/api/profile/asset/avatar" alt="Athipat Chamnanpa" /></div>
         <div class="hero-badge" data-i18n="hero-badge">&#128204; Available for Web Developer Role</div>
         <h1>Athipat <span>Chamnanpa</span></h1>
@@ -1193,7 +1192,7 @@
       "pill-count":       "ผลงาน 11 โปรเจกต์",
       "pill-expert":      "ผู้เชี่ยวชาญ React",
 
-      "about-h3": "ผม<span class=\"highlight\">อธิปัตย์ ชำนาญปา</span>",
+      "about-h3": "ผม <span class=\"highlight\">อธิปัตย์ ชำนาญปา</span>",
       "about-p1": "ผมเป็นนักพัฒนาเว็บไซต์ที่มุ่งมั่นในการพัฒนาแอปพลิเคชันเว็บที่ใช้งานได้จริงในระดับ Production ผมได้ออกแบบและพัฒนา <span class=\"highlight\">11 โปรเจกต์</span> อย่างเป็นอิสระ ครอบคลุมทั้งเว็บไซต์ราชการ ระบบบริหารจัดการคลังสินค้า และแอปพลิเคชันการเงิน",
       "about-p2": "ความเชี่ยวชาญหลักของผมอยู่ที่ <span class=\"highlight\">React</span>, <span class=\"highlight\">Vite</span> และ <span class=\"highlight\">Tailwind CSS</span> ซึ่งช่วยให้สามารถพัฒนา User Interface ที่รวดเร็วและรองรับการใช้งานบนอุปกรณ์ทุกขนาดพร้อมเชื่อมต่อ REST API นอกจากนี้ยังมีประสบการณ์ด้านการพัฒนา Backend ด้วย Node.js และ Express",
       "about-p3": "โปรเจกต์ที่มีความซับซ้อนทางเทคนิคมากที่สุดของผมคือ<span class=\"highlight\">ระบบติดตามราคา Amazon และลงขาย eBay อัตโนมัติ</span> ซึ่งสร้างประกาศขายด้วย AI รองรับตัวเลือกสินค้าหลายมิติ ซิงค์ราคาและคำสั่งซื้อแบบ Real-time ผ่าน Socket.io และส่งเลขพัสดุให้อัตโนมัติ — ตรงกับประเภทงานพัฒนาระบบ Full-stack แบบ Real-time ที่ผมต้องการทำในระดับวิชาชีพ",
