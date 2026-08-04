@@ -110,6 +110,19 @@
   .meta-row label { color: var(--muted); white-space: nowrap; }
   .meta-row input { text-align: right; max-width: 140px; }
 
+  .attn-line { display: flex; align-items: center; gap: 4px; margin-bottom: 6px; }
+  .attn-lbl { font-size: 0.95rem; color: var(--dark); font-weight: 600; white-space: nowrap; }
+  .attn-input { font-size: 0.95rem; font-weight: 600; padding-left: 4px; }
+
+  .intro-sentence { font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-bottom: 1.25rem; }
+
+  .terms-extra { font-size: 0.82rem; color: var(--muted); line-height: 1.9; }
+  .terms-extra .line { display: flex; align-items: center; gap: 6px; }
+  .terms-extra label { white-space: nowrap; }
+  .terms-extra input { max-width: 120px; }
+
+  .baht-words { text-align: center; font-size: 0.85rem; font-style: italic; color: var(--dark); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border); }
+
   .status-badge { display: flex; justify-content: flex-end; margin-bottom: 0.75rem; }
   .status-badge select {
     font-size: 0.72rem; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase;
@@ -149,7 +162,7 @@
   }
   .add-row-btn:hover { background: #bfdbfe; }
 
-  .totals { display: flex; justify-content: flex-end; margin-bottom: 2rem; }
+  .totals { display: flex; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
   .totals-box { min-width: 260px; }
   .totals-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 0.9rem; }
   .totals-row label { color: var(--muted); }
@@ -231,11 +244,14 @@
 
     <div class="bill-to">
       <div class="section-lbl" data-i18n="billTo">Bill To</div>
+      <div class="attn-line"><span class="attn-lbl" data-i18n="attnLbl">Attn:</span><input id="attnInput" class="attn-input" value="ท่านนายกองค์การบริหารส่วนตำบลแม่ใส" /></div>
       <input class="client-name" value="องค์การบริหารส่วนตำบลแม่ใส" />
       <input value="198 ม.12 ตำบลแม่ใส อำเภอเมืองพะเยา จังหวัดพะเยา 56000" />
       <input value="saraban_06560115@dla.go.th" />
       <input value="0-5488-9909" />
     </div>
+
+    <p class="intro-sentence" id="introSentence" data-i18n="introSentence">I am pleased to invoice for the goods/services below, per the price and terms stated in this document.</p>
 
     <table>
       <thead>
@@ -254,6 +270,10 @@
     <button class="add-row-btn" onclick="addRow()" data-i18n="addLineBtn">+ Add Line Item</button>
 
     <div class="totals">
+      <div class="terms-extra">
+        <div class="line"><label data-i18n="warrantyLbl">Warranty:</label><input id="warrantyTerm" value="365 days" /></div>
+        <div class="line"><label data-i18n="creditLbl">Credit:</label><input id="creditTerm" value="30 days" /></div>
+      </div>
       <div class="totals-box">
         <div class="totals-row">
           <label data-i18n="subtotal">Subtotal</label>
@@ -264,13 +284,22 @@
           <input class="pct" id="discountPct" type="number" value="0" min="0" step="0.01" oninput="recalc()" />
         </div>
         <div class="totals-row">
+          <label data-i18n="afterDiscount">Amount Before VAT</label>
+          <div class="val" id="afterDiscountVal">฿0.00</div>
+        </div>
+        <div class="totals-row">
           <label data-i18n="tax">Tax / VAT (%)</label>
           <input class="pct" id="taxPct" type="number" value="0" min="0" step="0.01" oninput="recalc()" />
+        </div>
+        <div class="totals-row">
+          <label data-i18n="vatAmount">VAT Amount</label>
+          <div class="val" id="vatAmountVal">฿0.00</div>
         </div>
         <div class="totals-row grand">
           <label data-i18n="total">Total Due</label>
           <div class="val" id="totalVal">฿0.00</div>
         </div>
+        <div class="baht-words" id="bahtWords">( — )</div>
       </div>
     </div>
 
@@ -357,10 +386,65 @@
     const discountPct = parseFloat(document.getElementById('discountPct').value) || 0;
     const taxPct      = parseFloat(document.getElementById('taxPct').value) || 0;
     const afterDiscount = subtotal * (1 - discountPct / 100);
-    const total = afterDiscount * (1 + taxPct / 100);
+    const vatAmount = afterDiscount * (taxPct / 100);
+    const total = afterDiscount + vatAmount;
 
     document.getElementById('subtotalVal').textContent = fmt(subtotal);
+    document.getElementById('afterDiscountVal').textContent = fmt(afterDiscount);
+    document.getElementById('vatAmountVal').textContent = fmt(vatAmount);
     document.getElementById('totalVal').textContent = fmt(total);
+    document.getElementById('bahtWords').textContent = '( ' + thaiBahtText(total) + ' )';
+  }
+
+  // ── Thai baht-in-words (matches the standard บาทถ้วน reading used on Thai
+  // government/business documents) ──
+  function thaiBahtText(amount) {
+    const digits = ['ศูนย์','หนึ่ง','สอง','สาม','สี่','ห้า','หก','เจ็ด','แปด','เก้า'];
+    const places = ['','สิบ','ร้อย','พัน','หมื่น','แสน'];
+
+    function convertGroup(numStr) {
+      numStr = numStr.replace(/^0+/, '');
+      if (!numStr) return '';
+      let out = '';
+      const len = numStr.length;
+      for (let i = 0; i < len; i++) {
+        const d = parseInt(numStr[i], 10);
+        const pos = len - i - 1;
+        if (d === 0) continue;
+        if (pos === 0) {
+          out += (d === 1 && len > 1) ? 'เอ็ด' : digits[d];
+        } else if (pos === 1) {
+          out += (d === 1) ? 'สิบ' : (d === 2) ? 'ยี่สิบ' : digits[d] + 'สิบ';
+        } else {
+          out += digits[d] + places[pos];
+        }
+      }
+      return out;
+    }
+
+    function convertInteger(intStr) {
+      intStr = intStr.replace(/^0+/, '') || '0';
+      if (intStr === '0') return 'ศูนย์';
+      const groups = [];
+      let s = intStr;
+      while (s.length > 0) { groups.unshift(s.slice(-6)); s = s.slice(0, -6); }
+      let out = '';
+      for (let i = 0; i < groups.length; i++) {
+        const g = convertGroup(groups[i]);
+        if (g) out += g + (i < groups.length - 1 ? 'ล้าน' : '');
+      }
+      return out;
+    }
+
+    amount = Math.round((amount || 0) * 100) / 100;
+    const negative = amount < 0;
+    amount = Math.abs(amount);
+    const baht = Math.floor(amount);
+    const satang = Math.round((amount - baht) * 100);
+
+    let text = convertInteger(String(baht)) + 'บาท';
+    text += satang > 0 ? convertGroup(String(satang).padStart(2, '0')) + 'สตางค์' : 'ถ้วน';
+    return (negative ? 'ลบ' : '') + text;
   }
 
   // ── i18n (labels/placeholders only — never touches data you've typed in) ──
@@ -374,6 +458,8 @@
       taxIdLbl: 'Tax ID:', sigLbl: 'Authorized by', sigClear: 'Clear',
       stUnpaid: 'Unpaid', stPaid: 'Paid', stOverdue: 'Overdue',
       fromAddress: '78 Moo 5, Maesai, Mueang Phayao 56000', fromName: 'Athipat Chumnanapa',
+      attnLbl: 'Attn:', introSentence: 'I am pleased to invoice for the goods/services below, per the price and terms stated in this document.',
+      warrantyLbl: 'Warranty:', creditLbl: 'Credit:', afterDiscount: 'Amount Before VAT', vatAmount: 'VAT Amount',
     },
     th: {
       back: '← กลับหน้าพอร์ตโฟลิโอ', addItemBtn: '+ เพิ่มรายการ', printBtn: '🖨️ พิมพ์ / บันทึก PDF',
@@ -384,6 +470,8 @@
       taxIdLbl: 'เลขประจำตัวผู้เสียภาษี:', sigLbl: 'ผู้มีอำนาจลงนาม', sigClear: 'ล้าง',
       stUnpaid: 'ยังไม่ชำระ', stPaid: 'ชำระแล้ว', stOverdue: 'เกินกำหนด',
       fromAddress: '78 หมู่ 5 ต.แม่ใส อ.เมือง จ.พะเยา 56000', fromName: 'อธิปัตย์ ชำนาญปา',
+      attnLbl: 'เรียน', introSentence: 'ยินดีนำส่งใบแจ้งหนี้สำหรับสินค้าและบริการตามรายละเอียดและเงื่อนไขที่ระบุไว้ในเอกสารฉบับนี้',
+      warrantyLbl: 'รับประกัน:', creditLbl: 'เครดิต:', afterDiscount: 'ราคารวมก่อนภาษีมูลค่าเพิ่ม', vatAmount: 'ภาษีมูลค่าเพิ่ม',
     },
   };
   let currentLang = 'th';
