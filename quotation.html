@@ -78,6 +78,7 @@
   input:hover, textarea:hover { border-color: var(--border); background: var(--light); }
   input:focus, textarea:focus { outline: none; border-color: var(--brand); background: #fff; }
   textarea { resize: vertical; min-height: 60px; }
+  textarea.desc-input { resize: none; min-height: 30px; line-height: 1.4; overflow: hidden; }
 
   .sheet-top { display: flex; justify-content: space-between; gap: 2rem; margin-bottom: 2rem; }
   .from-block .biz-name { font-size: 1.1rem; font-weight: 800; color: var(--brand); }
@@ -194,9 +195,9 @@
 
     <div class="sheet-top">
       <div class="from-block">
-        <input class="biz-name" value="Athipat Chumnanapa" />
+        <input class="biz-name" id="fromName" value="Athipat Chumnanapa" />
         <div class="line"><input value="Web Developer — React / Node.js" /></div>
-        <div class="line"><input value="78 Moo 5, Maesai, Mueang Phayao 56000" /></div>
+        <div class="line"><input id="fromAddress" value="78 Moo 5, Maesai, Mueang Phayao 56000" /></div>
         <div class="line"><input value="085-107-7620" /></div>
         <div class="line"><input value="athipaty@gmail.com" /></div>
         <div class="line taxid"><span class="taxid-lbl" data-i18n="taxIdLbl">Tax ID:</span><input class="taxid-input" value="1199700063809" /></div>
@@ -211,10 +212,10 @@
 
     <div class="bill-to">
       <div class="section-lbl" data-i18n="billTo">Bill To</div>
-      <input class="client-name" data-i18n-ph="clientName" placeholder="Client / Company Name" />
-      <input data-i18n-ph="address" placeholder="Address" />
-      <input data-i18n-ph="email" placeholder="Email" />
-      <input data-i18n-ph="phone" placeholder="Phone" />
+      <input class="client-name" value="องค์การบริหารส่วนตำบลแม่ใส" />
+      <input value="198 ม.12 ตำบลแม่ใส อำเภอเมืองพะเยา จังหวัดพะเยา 56000" />
+      <input value="saraban_06560115@dla.go.th" />
+      <input value="0-5488-9909" />
     </div>
 
     <table>
@@ -256,7 +257,7 @@
 
     <div class="notes">
       <div class="section-lbl" data-i18n="notesLbl">Notes / Terms</div>
-      <textarea>Quotation valid for 14 days. 50% deposit required to begin work, balance due on completion.</textarea>
+      <textarea id="notesText">Quotation valid for 120 days. 50% deposit required to begin work, balance due on completion.</textarea>
     </div>
 
     <div class="signature">
@@ -285,11 +286,16 @@
 
   const fmt = n => '฿' + (isNaN(n) ? 0 : n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  }
+
   function rowTemplate(n) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td class="num">${n}</td>
-      <td><input class="desc-input" placeholder="" oninput="recalc()" /></td>
+      <td><textarea class="desc-input" rows="1" oninput="recalc(); autoResize(this)"></textarea></td>
       <td class="num"><input class="qty" type="number" value="1" min="0" step="1" style="text-align:right" oninput="recalc()" /></td>
       <td class="amt"><input class="price" type="number" value="0" min="0" step="0.01" style="text-align:right" oninput="recalc()" /></td>
       <td class="amt amt-val">฿0.00</td>
@@ -346,6 +352,8 @@
       addLineBtn: '+ Add Line Item', subtotal: 'Subtotal', discount: 'Discount (%)', tax: 'Tax / VAT (%)', total: 'Total',
       notesLbl: 'Notes / Terms', footer: 'Thank you for the opportunity to work together.', descPh: 'Item description',
       taxIdLbl: 'Tax ID:', sigLbl: 'Authorized by', sigClear: 'Clear',
+      fromAddress: '78 Moo 5, Maesai, Mueang Phayao 56000', fromName: 'Athipat Chumnanapa',
+      notesText: 'Quotation valid for 120 days. 50% deposit required to begin work, balance due on completion.',
     },
     th: {
       back: '← กลับหน้าพอร์ตโฟลิโอ', addItemBtn: '+ เพิ่มรายการ', printBtn: '🖨️ พิมพ์ / บันทึก PDF',
@@ -355,6 +363,8 @@
       addLineBtn: '+ เพิ่มรายการ', subtotal: 'รวมเป็นเงิน', discount: 'ส่วนลด (%)', tax: 'ภาษีมูลค่าเพิ่ม (%)', total: 'รวมทั้งสิ้น',
       notesLbl: 'หมายเหตุ / เงื่อนไข', footer: 'ขอบคุณที่ให้โอกาสร่วมงานกัน', descPh: 'รายละเอียดรายการ',
       taxIdLbl: 'เลขประจำตัวผู้เสียภาษี:', sigLbl: 'ผู้มีอำนาจลงนาม', sigClear: 'ล้าง',
+      fromAddress: '78 หมู่ 5 ต.แม่ใส อ.เมือง จ.พะเยา 56000', fromName: 'อธิปัตย์ ชำนาญปา',
+      notesText: 'ใบเสนอราคานี้มีอายุ 120 วัน ต้องชำระมัดจำ 50% ก่อนเริ่มงาน ส่วนที่เหลือชำระเมื่องานเสร็จสมบูรณ์',
     },
   };
   let currentLang = 'th';
@@ -372,6 +382,9 @@
     document.querySelectorAll('#itemRows .desc-input').forEach(el => {
       if (!el.value) el.placeholder = I18N[lang].descPh;
     });
+    document.getElementById('fromName').value = I18N[lang].fromName;
+    document.getElementById('fromAddress').value = I18N[lang].fromAddress;
+    document.getElementById('notesText').value = I18N[lang].notesText;
   }
 
   // ── Signature pad — draw on mouse or touch, auto-saved to this browser so it

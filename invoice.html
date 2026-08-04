@@ -78,6 +78,7 @@
   input:hover, textarea:hover, select:hover { border-color: var(--border); background: var(--light); }
   input:focus, textarea:focus, select:focus { outline: none; border-color: var(--brand); background: #fff; }
   textarea { resize: vertical; min-height: 60px; }
+  textarea.desc-input { resize: none; min-height: 30px; line-height: 1.4; overflow: hidden; }
 
   .sheet-top { display: flex; justify-content: space-between; gap: 2rem; margin-bottom: 2rem; }
   .from-block .biz-name { font-size: 1.1rem; font-weight: 800; color: var(--brand); }
@@ -206,9 +207,9 @@
 
     <div class="sheet-top">
       <div class="from-block">
-        <input class="biz-name" value="Athipat Chumnanapa" />
+        <input class="biz-name" id="fromName" value="Athipat Chumnanapa" />
         <div class="line"><input value="Web Developer — React / Node.js" /></div>
-        <div class="line"><input value="78 Moo 5, Maesai, Mueang Phayao 56000" /></div>
+        <div class="line"><input id="fromAddress" value="78 Moo 5, Maesai, Mueang Phayao 56000" /></div>
         <div class="line"><input value="085-107-7620" /></div>
         <div class="line"><input value="athipaty@gmail.com" /></div>
         <div class="line taxid"><span class="taxid-lbl" data-i18n="taxIdLbl">Tax ID:</span><input class="taxid-input" value="1199700063809" /></div>
@@ -304,11 +305,16 @@
 
   const fmt = n => '฿' + (isNaN(n) ? 0 : n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  }
+
   function rowTemplate(n, desc = '', qty = 1, price = 0) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td class="num">${n}</td>
-      <td><input class="desc-input" value="${desc}" oninput="recalc()" /></td>
+      <td><textarea class="desc-input" rows="1" oninput="recalc(); autoResize(this)">${desc}</textarea></td>
       <td class="num"><input class="qty" type="number" value="${qty}" min="0" step="1" style="text-align:right" oninput="recalc()" /></td>
       <td class="amt"><input class="price" type="number" value="${price}" min="0" step="0.01" style="text-align:right" oninput="recalc()" /></td>
       <td class="amt amt-val">฿0.00</td>
@@ -320,7 +326,9 @@
 
   function addRow(desc = '', qty = 1, price = 0) {
     const tbody = document.getElementById('itemRows');
-    tbody.appendChild(rowTemplate(tbody.children.length + 1, desc, qty, price));
+    const tr = rowTemplate(tbody.children.length + 1, desc, qty, price);
+    tbody.appendChild(tr);
+    autoResize(tr.querySelector('.desc-input'));
     recalc();
   }
 
@@ -365,6 +373,7 @@
       notesLbl: 'Notes / Payment Details', footer: 'Thank you for your business.', descPh: 'Item description',
       taxIdLbl: 'Tax ID:', sigLbl: 'Authorized by', sigClear: 'Clear',
       stUnpaid: 'Unpaid', stPaid: 'Paid', stOverdue: 'Overdue',
+      fromAddress: '78 Moo 5, Maesai, Mueang Phayao 56000', fromName: 'Athipat Chumnanapa',
     },
     th: {
       back: '← กลับหน้าพอร์ตโฟลิโอ', addItemBtn: '+ เพิ่มรายการ', printBtn: '🖨️ พิมพ์ / บันทึก PDF',
@@ -374,6 +383,7 @@
       notesLbl: 'หมายเหตุ / รายละเอียดการชำระเงิน', footer: 'ขอบคุณสำหรับความไว้วางใจ', descPh: 'รายละเอียดรายการ',
       taxIdLbl: 'เลขประจำตัวผู้เสียภาษี:', sigLbl: 'ผู้มีอำนาจลงนาม', sigClear: 'ล้าง',
       stUnpaid: 'ยังไม่ชำระ', stPaid: 'ชำระแล้ว', stOverdue: 'เกินกำหนด',
+      fromAddress: '78 หมู่ 5 ต.แม่ใส อ.เมือง จ.พะเยา 56000', fromName: 'อธิปัตย์ ชำนาญปา',
     },
   };
   let currentLang = 'th';
@@ -394,6 +404,8 @@
     document.querySelectorAll('#itemRows .desc-input').forEach(el => {
       if (!el.value) el.placeholder = I18N[lang].descPh;
     });
+    document.getElementById('fromName').value = I18N[lang].fromName;
+    document.getElementById('fromAddress').value = I18N[lang].fromAddress;
   }
 
   // ── Signature pad — draw on mouse or touch, auto-saved to this browser so it
@@ -457,7 +469,7 @@
   const sigPad = setupSignaturePad('sigCanvas', 'athipat_signature_v1');
 
   // Prefilled with the ABT (Maesai Subdistrict) website project
-  addRow('ABT Website Development — เว็บไซต์องค์การบริหารส่วนตำบลแม่ใส', 1, 17000);
+  addRow('เว็บไซต์องค์การบริหารส่วนตำบลแม่ใส', 1, 17000);
   setLang('th');
 </script>
 
