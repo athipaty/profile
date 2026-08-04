@@ -132,7 +132,7 @@
   .baht-words { text-align: center; font-size: 0.85rem; font-style: italic; color: var(--dark); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border); }
 
   .bill-to { padding-top: 0.6rem; border-top: 1px dashed var(--border); line-height: 1.15; }
-  .bill-to .section-lbl { font-size: 0.68rem; font-weight: 800; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 0.3rem; }
+  .bill-to .section-lbl { font-size: 0.85rem; font-weight: 800; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 0.3rem; }
   .bill-to input { font-size: 0.8rem; font-weight: 400; font-style: normal; color: var(--muted); padding-left: 0; margin-bottom: 0; }
   .bill-to input.client-name { font-weight: 600; font-size: 0.85rem; color: var(--dark); }
 
@@ -579,6 +579,13 @@
   addRow('บริการพัฒนาเว็บไซต์สำหรับองค์กรปกครองส่วนท้องถิ่น\n- ออกแบบเว็บไซต์ตามที่ลูกค้าเลือก รองรับการแสดงผลบนมือถือ ตามหลักการ Responsive Design\n- ระบบจัดการเนื้อหาแบบลาก-วาง (Drag and Drop) แก้ไขเนื้อหาแบบบล็อก ใช้งานง่าย ไม่ต้องเขียนโค้ด\n- ระบบดึงประกาศจัดซื้อจัดจ้างจากระบบ e-GP อัตโนมัติ\n- ระบบร้องเรียนร้องทุกข์และแจ้งเบาะแสการทุจริตออนไลน์ พร้อมติดตามสถานะ\n- ระบบประเมินคุณธรรมและความโปร่งใส (ITA/LPA) พร้อมช่องทางเข้าถึงตัวชี้วัด\n- ระบบ e-Service/รับคำร้องออนไลน์ ไม่จำกัดจำนวนคำร้อง\n- อัปโหลดไฟล์เอกสารและรูปภาพไม่จำกัดจำนวน (PDF, Excel, Word, รูปภาพ) พร้อมสำรองข้อมูลอัตโนมัติ\n- ระบบแจ้งเตือนคุกกี้ตามกฎหมาย PDPA และระบบเข้าสู่ระบบหลังบ้านที่ปลอดภัย\n- ปรับแต่งโครงสร้างเว็บไซต์ให้รองรับการค้นหาบน Google (SEO)', 1, 0);
   addRow('บริการดูแลและบำรุงรักษาเว็บไซต์รายปี\n- พื้นที่จัดเก็บข้อมูลเว็บไซต์ 100 GB\n- บริการจดโดเมนเนมและต่ออายุรายปี\n- บริการจัดทำอีเมลภายใต้โดเมนเว็บไซต์ https://maesaiphayao.go.th\n- บริการจัดทำ SSL Certificate สำหรับความปลอดภัย (HTTPS)\n- ระบบสำรองข้อมูล (Backup) อัตโนมัติ\n- บริการแก้ไขปัญหาและดูแลระบบตลอดปีสัญญา', 1, 0);
   setLang('th');
+
+  // Textareas auto-size using on-screen font metrics; print uses a smaller
+  // font, so re-measure right before printing or the box stays oversized
+  // and leaves a gap of empty space below the (now smaller) text.
+  window.addEventListener('beforeprint', () => {
+    document.querySelectorAll('.desc-input').forEach(autoResize);
+  });
 </script>
 
 </body>
