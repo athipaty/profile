@@ -83,7 +83,7 @@
 
   .sheet-top { display: flex; justify-content: space-between; gap: 2rem; margin-bottom: 1.25rem; }
   .sheet-top-left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.85rem; }
-  .from-block .biz-name { font-size: 0.95rem; font-weight: 600; font-style: normal; color: var(--brand); padding-left: 0; }
+  .from-block .biz-name { font-size: 0.95rem; font-weight: 600; font-style: normal; color: #000; padding-left: 0; }
   .from-block .line { line-height: 1.25; }
   .from-block .line input { font-size: 0.8rem; font-weight: 400; font-style: normal; color: var(--muted); padding-left: 0; }
   .from-block .line.taxid { display: flex; align-items: center; gap: 4px; }
@@ -252,7 +252,7 @@
       <div class="sheet-top-left">
         <div class="from-block">
           <input class="biz-name" id="fromName" value="Athipat Chumnanapa" />
-          <div class="line"><input value="Web Developer — React / Node.js" /></div>
+          <div class="line"><input value="Web Developer — React / Node.js" style="font-weight:bold" /></div>
           <div class="line"><input id="fromAddress" value="78 Moo 5, Maesai, Mueang Phayao 56000" /></div>
           <div class="line contact-line"><input value="085-107-7620" /><span class="sep">|</span><input value="athipaty@gmail.com" /></div>
           <div class="line taxid"><span class="taxid-lbl" data-i18n="taxIdLbl">Tax ID:</span><input class="taxid-input" value="1199700063809" /></div>
@@ -260,7 +260,7 @@
 
         <div class="bill-to">
           <div class="section-lbl" data-i18n="billTo">Bill To</div>
-          <input class="client-name" value="องค์การบริหารส่วนตำบลแม่ใส" />
+          <input class="client-name" value="" />
           <input value="198 ม.12 ตำบลแม่ใส อำเภอเมืองพะเยา จังหวัดพะเยา 56000" />
           <div class="contact-line"><input value="054-889-909" /><span class="sep">|</span><input value="saraban_06560115@dla.go.th" /></div>
         </div>
@@ -314,7 +314,7 @@
         </div>
         <div class="totals-row">
           <label data-i18n="tax">Tax / VAT (%)</label>
-          <input class="pct" id="taxPct" type="number" value="7" min="0" step="0.01" oninput="recalc()" />
+          <input class="pct" id="taxPct" type="number" value="0" min="0" step="0.01" oninput="recalc()" />
         </div>
         <div class="totals-row">
           <label data-i18n="vatAmount">VAT Amount</label>
@@ -354,8 +354,20 @@
     d.setDate(d.getDate() + offsetDays);
     return d.toISOString().slice(0, 10);
   }
-  document.getElementById('quoteDate').value = todayISO();
-  document.getElementById('quoteValid').value = todayISO(14);
+  function addDaysISO(isoDate, offsetDays) {
+    const d = new Date(isoDate + 'T00:00:00');
+    d.setDate(d.getDate() + offsetDays);
+    return d.toISOString().slice(0, 10);
+  }
+  function updateValidFromQuoteDate() {
+    const quoteDateEl = document.getElementById('quoteDate');
+    if (quoteDateEl.value) {
+      document.getElementById('quoteValid').value = addDaysISO(quoteDateEl.value, 14);
+    }
+  }
+  document.getElementById('quoteDate').value = todayISO(1);
+  document.getElementById('quoteDate').addEventListener('change', updateValidFromQuoteDate);
+  updateValidFromQuoteDate();
 
   const fmt = n => '฿' + (isNaN(n) ? 0 : n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
@@ -375,7 +387,7 @@
       <td class="rownum">${n}</td>
       <td><textarea class="desc-input" rows="1" oninput="recalc(); autoResize(this); syncDescPrint(this)">${desc}</textarea><div class="desc-print"></div></td>
       <td class="num"><input class="qty" type="number" value="${qty}" min="0" step="1" style="text-align:right" oninput="recalc()" /></td>
-      <td class="amt"><input class="price" type="number" value="${price}" min="0" step="0.01" style="text-align:right" oninput="recalc()" /></td>
+      <td class="amt"><input class="price" type="text" inputmode="decimal" value="${Number(price).toLocaleString('en-US', { maximumFractionDigits: 2 })}" style="text-align:right" oninput="formatPriceInput(this); recalc()" /></td>
       <td class="amt amt-val">฿0.00</td>
       <td class="delcol"><button class="row-del" onclick="delRow(this)" title="Remove item">✕</button></td>
     `;
@@ -405,11 +417,19 @@
     });
   }
 
+  function formatPriceInput(el) {
+    const raw = el.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+    const parts = raw.split('.');
+    const intPart = parts[0] ? parseInt(parts[0], 10).toLocaleString('en-US') : '';
+    const decPart = parts.length > 1 ? '.' + parts[1].slice(0, 2) : '';
+    el.value = intPart + decPart;
+  }
+
   function recalc() {
     let subtotal = 0;
     document.querySelectorAll('#itemRows tr').forEach(tr => {
       const qty   = parseFloat(tr.querySelector('.qty').value) || 0;
-      const price = parseFloat(tr.querySelector('.price').value) || 0;
+      const price = parseFloat(tr.querySelector('.price').value.replace(/,/g, '')) || 0;
       const amt   = qty * price;
       tr.querySelector('.amt-val').textContent = fmt(amt);
       subtotal += amt;
