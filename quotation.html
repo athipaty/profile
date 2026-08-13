@@ -254,7 +254,7 @@
           <input class="biz-name" id="fromName" value="Athipat Chumnanapa" />
           <div class="line"><input value="Web Developer — React / Node.js" /></div>
           <div class="line"><input id="fromAddress" value="78 Moo 5, Maesai, Mueang Phayao 56000" /></div>
-          <div class="line contact-line"><input value="085-107-7620" /><span class="sep">·</span><input value="athipaty@gmail.com" /></div>
+          <div class="line contact-line"><input value="085-107-7620" /><span class="sep">|</span><input value="athipaty@gmail.com" /></div>
           <div class="line taxid"><span class="taxid-lbl" data-i18n="taxIdLbl">Tax ID:</span><input class="taxid-input" value="1199700063809" /></div>
         </div>
 
@@ -262,7 +262,7 @@
           <div class="section-lbl" data-i18n="billTo">Bill To</div>
           <input class="client-name" value="องค์การบริหารส่วนตำบลแม่ใส" />
           <input value="198 ม.12 ตำบลแม่ใส อำเภอเมืองพะเยา จังหวัดพะเยา 56000" />
-          <div class="contact-line"><input value="0-5488-9909" /><span class="sep">·</span><input value="saraban_06560115@dla.go.th" /></div>
+          <div class="contact-line"><input value="054-889-909" /><span class="sep">|</span><input value="saraban_06560115@dla.go.th" /></div>
         </div>
       </div>
 
@@ -272,7 +272,7 @@
         <div class="meta-row"><label data-i18n="dateLbl">Date</label><input id="quoteDate" type="date" /></div>
         <div class="meta-row"><label data-i18n="validLbl">Valid Until</label><input id="quoteValid" type="date" /></div>
         <div class="meta-row"><label data-i18n="priceValidLbl">Price Valid For</label><input id="priceValidTerm" value="120 days" /></div>
-        <div class="meta-row"><label data-i18n="deliveryLbl">Delivery/Completion</label><input id="deliveryTerm" value="30 days from order" /></div>
+        <div class="meta-row"><label data-i18n="deliveryLbl">Delivery/Completion</label><input id="deliveryTerm" value="30 วันหลังจากสั่งซื้อ" /></div>
       </div>
     </div>
 
@@ -504,7 +504,7 @@
       notesLbl: 'หมายเหตุ / เงื่อนไข', footer: 'ขอบคุณที่ให้โอกาสร่วมงานกัน', descPh: 'รายละเอียดรายการ',
       taxIdLbl: 'เลขประจำตัวผู้เสียภาษี:', sigLbl: 'อธิปัตย์ ชำนาญปา', sigClear: 'ล้าง',
       fromAddress: '78 หมู่ 5 ต.แม่ใส อ.เมือง จ.พะเยา 56000', fromName: 'อธิปัตย์ ชำนาญปา',
-      notesText: 'ใบเสนอราคานี้มีอายุ 120 วัน ต้องชำระมัดจำ 50% ก่อนเริ่มงาน ส่วนที่เหลือชำระเมื่องานเสร็จสมบูรณ์',
+      notesText: 'ใบเสนอราคานี้มีอายุ 120 วัน',
       priceValidLbl: 'ยืนราคา', deliveryLbl: 'กำหนดส่งมอบงาน', attnLbl: 'เรียน',
       introSentence: 'ยินดีเสนอราคาสินค้าและบริการตามรายละเอียดและเงื่อนไขที่ระบุไว้ในเอกสารฉบับนี้',
       warrantyLbl: 'รับประกัน:', creditLbl: 'เครดิต:', afterDiscount: 'ราคารวมก่อนภาษีมูลค่าเพิ่ม', vatAmount: 'ภาษีมูลค่าเพิ่ม',
@@ -591,7 +591,7 @@
   const sigPad = setupSignaturePad('sigCanvas', 'athipat_signature_v1');
 
   // Start with 3 blank line items, then apply default language
-  addRow('บริการพัฒนาและดูแลบำรุงรักษาเว็บไซต์สำหรับองค์กรปกครองส่วนท้องถิ่น\n- ออกแบบเว็บไซต์ตามที่ลูกค้าเลือก รองรับการแสดงผลบนมือถือ ตามหลักการ Responsive Design\n- ระบบจัดการเนื้อหาแบบลาก-วาง (Drag and Drop) แก้ไขเนื้อหาแบบบล็อก ใช้งานง่าย ไม่ต้องเขียนโค้ด\n- ระบบดึงประกาศจัดซื้อจัดจ้างจากระบบ e-GP อัตโนมัติ\n- ระบบร้องเรียนร้องทุกข์และแจ้งเบาะแสการทุจริตออนไลน์ พร้อมติดตามสถานะ\n- ระบบประเมินคุณธรรมและความโปร่งใส (ITA/LPA) พร้อมช่องทางเข้าถึงตัวชี้วัด\n- ระบบ e-Service/รับคำร้องออนไลน์ ไม่จำกัดจำนวนคำร้อง\n- อัปโหลดไฟล์เอกสารและรูปภาพไม่จำกัดจำนวน (PDF, Excel, Word, รูปภาพ) พร้อมสำรองข้อมูลอัตโนมัติ\n- ระบบแจ้งเตือนคุกกี้ตามกฎหมาย PDPA และระบบเข้าสู่ระบบหลังบ้านที่ปลอดภัย\n- ปรับแต่งโครงสร้างเว็บไซต์ให้รองรับการค้นหาบน Google (SEO)\n- พื้นที่จัดเก็บข้อมูลเว็บไซต์ 100 GB\n- บริการจดโดเมนเนมและต่ออายุรายปี\n- บริการจัดทำอีเมลภายใต้โดเมนเว็บไซต์ https://maesaiphayao.go.th\n- บริการจัดทำ SSL Certificate สำหรับความปลอดภัย (HTTPS)\n- ระบบสำรองข้อมูล (Backup) อัตโนมัติ\n- บริการแก้ไขปัญหาและดูแลระบบตลอดปีสัญญา', 1, 0);
+  addRow('บริการพัฒนาและดูแลบำรุงรักษาเว็บไซต์สำหรับองค์กรปกครองส่วนท้องถิ่น\n- ออกแบบเว็บไซต์ตามที่ลูกค้าเลือก รองรับการแสดงผลบนมือถือ ตามหลักการ Responsive Design\n- ระบบจัดการเนื้อหาแบบลาก-วาง (Drag and Drop) แก้ไขเนื้อหาแบบบล็อก ใช้งานง่าย ไม่ต้องเขียนโค้ด\n- ระบบดึงประกาศจัดซื้อจัดจ้างจากระบบ e-GP อัตโนมัติ\n- ระบบร้องเรียนร้องทุกข์และแจ้งเบาะแสการทุจริตออนไลน์ พร้อมติดตามสถานะ\n- ระบบประเมินคุณธรรมและความโปร่งใส (ITA/LPA) พร้อมช่องทางเข้าถึงตัวชี้วัด\n- ระบบ e-Service/รับคำร้องออนไลน์ ไม่จำกัดจำนวนคำร้อง\n- อัปโหลดไฟล์เอกสารและรูปภาพไม่จำกัดจำนวน (PDF, Excel, Word, รูปภาพ) พร้อมสำรองข้อมูลอัตโนมัติ\n- ระบบแจ้งเตือนคุกกี้ตามกฎหมาย PDPA และระบบเข้าสู่ระบบหลังบ้านที่ปลอดภัย\n- ปรับแต่งโครงสร้างเว็บไซต์ให้รองรับการค้นหาบน Google (SEO)\n- พื้นที่จัดเก็บข้อมูลเว็บไซต์ 100 GB\n- บริการจดโดเมนเนมและต่ออายุรายปี\n- บริการจัดทำอีเมลภายใต้โดเมนเว็บไซต์ https://maesaiphayao.go.th\n- บริการจัดทำ SSL Certificate สำหรับความปลอดภัย (HTTPS)\n- ระบบสำรองข้อมูล (Backup) อัตโนมัติ\n- บริการแก้ไขปัญหาและดูแลระบบตลอดปีสัญญา', 1, 17000);
   setLang('th');
 </script>
 
