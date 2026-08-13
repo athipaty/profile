@@ -354,15 +354,15 @@
     d.setDate(d.getDate() + offsetDays);
     return d.toISOString().slice(0, 10);
   }
-  function addDaysISO(isoDate, offsetDays) {
+  function addMonthsISO(isoDate, offsetMonths) {
     const d = new Date(isoDate + 'T00:00:00');
-    d.setDate(d.getDate() + offsetDays);
+    d.setMonth(d.getMonth() + offsetMonths);
     return d.toISOString().slice(0, 10);
   }
   function updateValidFromQuoteDate() {
     const quoteDateEl = document.getElementById('quoteDate');
     if (quoteDateEl.value) {
-      document.getElementById('quoteValid').value = addDaysISO(quoteDateEl.value, 14);
+      document.getElementById('quoteValid').value = addMonthsISO(quoteDateEl.value, 3);
     }
   }
   document.getElementById('quoteDate').value = todayISO(1);
