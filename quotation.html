@@ -300,26 +300,6 @@
         <div class="line"><label data-i18n="creditLbl">Credit:</label><input id="creditTerm" value="30 days" /></div>
       </div>
       <div class="totals-box">
-        <div class="totals-row">
-          <label data-i18n="subtotal">Subtotal</label>
-          <div class="val" id="subtotalVal">฿0.00</div>
-        </div>
-        <div class="totals-row">
-          <label data-i18n="discount">Discount (%)</label>
-          <input class="pct" id="discountPct" type="number" value="0" min="0" step="0.01" oninput="recalc()" />
-        </div>
-        <div class="totals-row">
-          <label data-i18n="afterDiscount">Amount Before VAT</label>
-          <div class="val" id="afterDiscountVal">฿0.00</div>
-        </div>
-        <div class="totals-row">
-          <label data-i18n="tax">Tax / VAT (%)</label>
-          <input class="pct" id="taxPct" type="number" value="0" min="0" step="0.01" oninput="recalc()" />
-        </div>
-        <div class="totals-row">
-          <label data-i18n="vatAmount">VAT Amount</label>
-          <div class="val" id="vatAmountVal">฿0.00</div>
-        </div>
         <div class="totals-row grand">
           <label data-i18n="total">Total</label>
           <div class="val" id="totalVal">฿0.00</div>
@@ -434,15 +414,8 @@
       subtotal += amt;
     });
 
-    const discountPct = parseFloat(document.getElementById('discountPct').value) || 0;
-    const taxPct      = parseFloat(document.getElementById('taxPct').value) || 0;
-    const afterDiscount = subtotal * (1 - discountPct / 100);
-    const vatAmount = afterDiscount * (taxPct / 100);
-    const total = afterDiscount + vatAmount;
+    const total = subtotal;
 
-    document.getElementById('subtotalVal').textContent = fmt(subtotal);
-    document.getElementById('afterDiscountVal').textContent = fmt(afterDiscount);
-    document.getElementById('vatAmountVal').textContent = fmt(vatAmount);
     document.getElementById('totalVal').textContent = fmt(total);
     document.getElementById('bahtWords').textContent = '( ' + thaiBahtText(total) + ' )';
   }
@@ -611,6 +584,7 @@
 
   // Start with 3 blank line items, then apply default language
   addRow('บริการพัฒนาและดูแลบำรุงรักษาเว็บไซต์สำหรับองค์กรปกครองส่วนท้องถิ่น\n- ออกแบบเว็บไซต์ตามที่ลูกค้าเลือก รองรับการแสดงผลบนมือถือ ตามหลักการ Responsive Design\n- ระบบจัดการเนื้อหาแบบลาก-วาง (Drag and Drop) แก้ไขเนื้อหาแบบบล็อก ใช้งานง่าย ไม่ต้องเขียนโค้ด\n- ระบบดึงประกาศจัดซื้อจัดจ้างจากระบบ e-GP อัตโนมัติ\n- ระบบร้องเรียนร้องทุกข์และแจ้งเบาะแสการทุจริตออนไลน์ พร้อมติดตามสถานะ\n- ระบบประเมินคุณธรรมและความโปร่งใส (ITA/LPA) พร้อมช่องทางเข้าถึงตัวชี้วัด\n- ระบบ e-Service/รับคำร้องออนไลน์ ไม่จำกัดจำนวนคำร้อง\n- อัปโหลดไฟล์เอกสารและรูปภาพไม่จำกัดจำนวน (PDF, Excel, Word, รูปภาพ) พร้อมสำรองข้อมูลอัตโนมัติ\n- ระบบแจ้งเตือนคุกกี้ตามกฎหมาย PDPA และระบบเข้าสู่ระบบหลังบ้านที่ปลอดภัย\n- ปรับแต่งโครงสร้างเว็บไซต์ให้รองรับการค้นหาบน Google (SEO)\n- พื้นที่จัดเก็บข้อมูลเว็บไซต์ 100 GB\n- บริการจดโดเมนเนมและต่ออายุรายปี\n- บริการจัดทำอีเมลภายใต้โดเมนเว็บไซต์ https://maesaiphayao.go.th\n- บริการจัดทำ SSL Certificate สำหรับความปลอดภัย (HTTPS)\n- ระบบสำรองข้อมูล (Backup) อัตโนมัติ\n- บริการแก้ไขปัญหาและดูแลระบบตลอดปีสัญญา', 1, 17000);
+  addRow('บริการออกแบบเว็บไซต์สำหรับองค์กรปกครองส่วนท้องถิ่น\n- ออกแบบเว็บไซต์ของหน่วยงาน รองรับการแสดงผลบนมือถือ\n- แสดงข้อมูลภาพกิจกรรม ข่าวสารประชาสัมพันธ์ และข้อมูลต่างๆ บนหน้าเว็บหลักและมีระบบเมนูย่อยตามหัวข้อต่างๆ ของหน่วยงาน\n- ช่องทางการให้บริการ e-Service บริการออนไลน์ประชาชนของหน่วยงาน\n- ระบบกระทู้เว็บบอร์ด\n- ระบบเชื่อมโยงประกาศจัดซื้อจัดจ้างจากระบบ e-GP อัตโนมัติ\n- ระบบรูปหน้าเว็บไซต์ตามวันสำคัญของทางราชการ\n- พื้นที่จัดเก็บข้อมูลเว็บไซต์ 100 GB\n- ระบบสำรองข้อมูล (Backup) อัตโนมัติ\n- บริการจดโดเมนเนม 1 ปี และต่ออายุรายปี\n* ค่าใช้จ่ายในการดูแลและปรับปรุงระบบเว็บไซต์และต่อสัญญาปีถัดไป ราคาปีละ 10,000 บาท', 1, 10000);
   setLang('th');
 </script>
 
